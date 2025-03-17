@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import ucoFitLogo from '../../assets/images/ucofit-logo.png';
-import { StyledAppBar, LogoButton, NavButton } from './styles/Navbar.styles';
+import { StyledAppBar, LogoButton, NavButton, StyledToolbar } from './styles/Navbar.styles';
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ export const Navbar = () => {
 
   return (
     <StyledAppBar position="static">
-      <Toolbar>
+      <StyledToolbar>
         <motion.div
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
@@ -87,7 +87,7 @@ export const Navbar = () => {
             )}
           </Box>
         )}
-      </Toolbar>
+      </StyledToolbar>
     </StyledAppBar>
   );
 };

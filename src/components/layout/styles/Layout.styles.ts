@@ -10,9 +10,12 @@ export const LayoutContainer = styled(Box)(({ theme }) => ({
 
 export const MainContainer = styled(Container)(({ theme }) => ({
   flex: 1,
-  paddingTop: theme.spacing(4),
-  paddingBottom: theme.spacing(4),
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: theme.spacing(4),
   [theme.breakpoints.up('lg')]: {
-    maxWidth: '1400px', // Contenedor más ancho para pantallas grandes
+    maxWidth: '1600px', // Más ancho para pantallas grandes
   },
 }));

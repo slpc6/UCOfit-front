@@ -7,11 +7,11 @@ export const StyledAppBar = styled(AppBar)(({ theme }) => ({
 }));
 
 export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  [theme.breakpoints.up('lg')]: {
-    maxWidth: '1400px',
-    width: '100%',
-    margin: '0 auto',
-  },
+  maxWidth: '1600px',
+  width: '100%',
+  margin: '0 auto',
+  padding: theme.spacing(1, 4),
+  height: '80px', // Altura fija para el navbar
 }));
 
 export const LogoButton = styled(Button)(({ theme }) => ({

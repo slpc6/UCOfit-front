@@ -52,7 +52,7 @@ export const Login = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        style={{ width: '100%', maxWidth: '500px' }}
+        style={{ width: '100%', maxWidth: '600px' }}
       >
         <LoginPaper elevation={3}>
           <Typography 

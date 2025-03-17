@@ -20,8 +20,13 @@ export const authService = {
     return response.data;
   },
 
+  getProfile: async () => {
+    const response = await api.get('/usuario/perfil');
+    return response.data;
+  },
+
   deleteAccount: async () => {
-    const response = await api.delete('/usuario/delete');
+    const response = await api.delete('/usuario/eliminar');
     return response.data;
   }
 };

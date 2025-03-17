@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
 import { Login } from './components/features/Login';
 import { Register } from './components/features/Register';
+import { Profile } from './components/features/Profile';
 import { Home } from './components/pages/Home';
 import { Layout } from './components/layout/Layout';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
@@ -33,7 +34,7 @@ function App() {
             {/* Rutas protegidas */}
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Home />} />
-              <Route path="/profile" element={<div>Perfil del Usuario</div>} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
 
             {/* Redirigir rutas no encontradas al login o home según autenticación */}
