@@ -12,6 +12,8 @@ import { useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import ucoFitLogo from '../../assets/images/ucofit-logo.png';
 import { StyledAppBar, LogoButton, NavButton, StyledToolbar } from './styles/Navbar.styles';
+import AddIcon from '@mui/icons-material/Add';
+import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -66,22 +68,33 @@ export const Navbar = () => {
           </IconButton>
         ) : (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {!token ? (
+            {token ? (
+              <>
+                <NavButton onClick={() => navigate('/')}>
+                  Inicio
+                </NavButton>
+                <NavButton onClick={() => navigate('/mis-publicaciones')}>
+                  <VideoLibraryIcon sx={{ mr: 1 }} />
+                  Mis Publicaciones
+                </NavButton>
+                <NavButton onClick={() => navigate('/crear-publicacion')}>
+                  <AddIcon sx={{ mr: 1 }} />
+                  Nueva Publicación
+                </NavButton>
+                <NavButton onClick={() => navigate('/profile')}>
+                  Perfil
+                </NavButton>
+                <NavButton onClick={handleLogout}>
+                  Cerrar Sesión
+                </NavButton>
+              </>
+            ) : (
               <>
                 <NavButton onClick={() => navigate('/login')}>
                   Iniciar Sesión
                 </NavButton>
                 <NavButton onClick={() => navigate('/register')}>
                   Registrarse
-                </NavButton>
-              </>
-            ) : (
-              <>
-                <NavButton onClick={() => navigate('/profile')}>
-                  Perfil
-                </NavButton>
-                <NavButton onClick={handleLogout}>
-                  Cerrar Sesión
                 </NavButton>
               </>
             )}

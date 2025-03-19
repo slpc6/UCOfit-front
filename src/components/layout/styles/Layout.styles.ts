@@ -16,6 +16,6 @@ export const MainContainer = styled(Container)(({ theme }) => ({
   justifyContent: 'center',
   padding: theme.spacing(4),
   [theme.breakpoints.up('lg')]: {
-    maxWidth: '1600px', // Más ancho para pantallas grandes
+    maxWidth: '100%', // Más ancho para pantallas grandes
   },
 }));

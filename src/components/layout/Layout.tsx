@@ -1,4 +1,4 @@
-import { LayoutContainer, MainContainer } from './styles/Layout.styles';
+import { Box } from '@mui/material';
 import { Navbar } from './Navbar';
 
 interface LayoutProps {
@@ -7,11 +7,11 @@ interface LayoutProps {
 
 export const Layout = ({ children }: LayoutProps) => {
   return (
-    <LayoutContainer>
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%' }}>
       <Navbar />
-      <MainContainer>
+      <Box sx={{ flex: 1, width: '100%' }}>
         {children}
-      </MainContainer>
-    </LayoutContainer>
+      </Box>
+    </Box>
   );
 };

@@ -4,10 +4,12 @@ import { AppBar, Button, Toolbar } from '@mui/material';
 export const StyledAppBar = styled(AppBar)(({ theme }) => ({
   background: 'linear-gradient(45deg, #1B5E20 30%, #4CAF50 90%)',
   boxShadow: '0 3px 5px 2px rgba(76, 175, 80, .3)',
+  width: '100%',
+  //position: 'relative',
 }));
 
 export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  maxWidth: '1600px',
+  //maxWidth: '1600px',
   width: '100%',
   margin: '0 auto',
   padding: theme.spacing(1, 4),
@@ -16,7 +18,7 @@ export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 export const LogoButton = styled(Button)(({ theme }) => ({
   padding: 0,
-  minWidth: 'auto',
+  minWidth: '100%',
   marginRight: theme.spacing(2),
   '& img': {
     width: '50px', // Logo más grande
@@ -34,9 +36,9 @@ export const LogoButton = styled(Button)(({ theme }) => ({
 
 export const NavButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(0, 1),
-  borderRadius: '20px',
-  padding: '8px 24px', // Botones más grandes
-  fontSize: '1rem',
+  //borderRadius: '20px',
+  //padding: '8px 24px', // Botones más grandes
+  //fontSize: '1rem',
   color: 'inherit',
   '&:hover': {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
