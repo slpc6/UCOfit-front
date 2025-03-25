@@ -1,3 +1,6 @@
+// Pagina de perfil del usuario
+
+//External imports
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -12,21 +15,18 @@ import {
   Divider
 } from '@mui/material';
 import { motion } from 'framer-motion';
-import { ProfileContainer, ProfilePaper, ProfileField } from './styles/Profile.styles';
-import { authService } from '../../services/authService';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import DescriptionIcon from '@mui/icons-material/Description';
 import BadgeIcon from '@mui/icons-material/Badge';
 
-interface UserProfile {
-  nombre: string;
-  apellido: string;
-  email: string;
-  descripcion: string;
-  rol: string;
-}
+
+//Internal imports
+import { UserProfile } from '../../types/user';
+import { ProfileContainer, ProfilePaper, ProfileField } from './styles/Profile.styles';
+import { authService } from '../../services/authService';
+
 
 export const Profile = () => {
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ export const Profile = () => {
       }
     };
     fetchProfile();
-  }, []);
+  });
 
   const handleDeleteAccount = async () => {
     setDeleteLoading(true);

@@ -1,3 +1,6 @@
+// Pagina para registro de usuario
+
+//External imports
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -11,13 +14,17 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { LoginContainer, LoginPaper } from './styles/Login.styles';
-import { authService } from '../../services/authService';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import DescriptionIcon from '@mui/icons-material/Description';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
+
+//Internal imports
+import { authService } from '../../services/authService';
+
 
 export const Register = () => {
   const navigate = useNavigate();

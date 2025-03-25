@@ -1,3 +1,6 @@
+// pagina para inicio de sesion
+
+//External imports
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -11,11 +14,15 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { LoginContainer, LoginPaper } from './styles/Login.styles';
-import { authService } from '../../services/authService';
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
+
+//Internal imports
+import { authService } from '../../services/authService';
+
 
 export const Login = () => {
   const navigate = useNavigate();
