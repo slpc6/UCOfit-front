@@ -14,6 +14,7 @@ import ucoFitLogo from '../../assets/images/ucofit-logo.png';
 import { StyledAppBar, LogoButton, NavButton, StyledToolbar } from './styles/Navbar.styles';
 import AddIcon from '@mui/icons-material/Add';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -70,6 +71,13 @@ export const Navbar = () => {
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {token ? (
               <>
+                <NavButton onClick={() => navigate('/')}>
+                  Inicio
+                </NavButton>
+                <NavButton onClick={() => navigate('/ranking')}>
+                  <LeaderboardIcon sx={{ mr: 1 }} />
+                  Ranking
+                </NavButton>
                 <NavButton onClick={() => navigate('/mis-publicaciones')}>
                   <VideoLibraryIcon sx={{ mr: 1 }} />
                   Mis Publicaciones

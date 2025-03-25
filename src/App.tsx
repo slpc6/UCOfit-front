@@ -1,5 +1,10 @@
+//Punto de inicio principal de la aplicación
+
+//External imports
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
+
+//Internal imports
 import { Login } from './components/features/Login';
 import { Register } from './components/features/Register';
 import { Home } from './components/pages/Home';
@@ -8,6 +13,8 @@ import { MisPublicaciones } from './components/pages/MisPublicaciones';
 import { CrearPublicacion } from './components/pages/CrearPublicacion';
 import { Layout } from './components/layout/Layout';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
+import { Ranking } from './components/pages/Ranking';
+
 
 // Creamos un tema personalizado
 const theme = createTheme({
@@ -90,6 +97,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/mis-publicaciones" element={<MisPublicaciones />} />
+              <Route path="/ranking" element={<Ranking />} />
               <Route path="/crear-publicacion" element={<CrearPublicacion />} />
             </Route>
 

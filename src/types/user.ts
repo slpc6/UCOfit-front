@@ -17,4 +17,5 @@ export interface User {
     email: string;
     descripcion: string;
     rol: string;
+    puntuacion: number;
   }
