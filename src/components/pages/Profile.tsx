@@ -1,3 +1,6 @@
+// Pagina de perfil del usuario
+
+//External imports
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -15,22 +18,19 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { ProfileContainer, ProfilePaper, ProfileField } from './styles/Home.styles';
-import { authService } from '../../services/authService';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import DescriptionIcon from '@mui/icons-material/Description';
 import BadgeIcon from '@mui/icons-material/Badge';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
-import { publicacionService } from '../../services/publicacionService';
 
-interface UserProfile {
-  nombre: string;
-  apellido: string;
-  email: string;
-  descripcion: string;
-  rol: string;
-}
+
+//Internal imports
+import { UserProfile } from '../../types/user';
+import { publicacionService } from '../../services/publicacionService';
+import { authService } from '../../services/authService';
+
 
 export const Profile = () => {
   const navigate = useNavigate();

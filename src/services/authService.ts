@@ -1,5 +1,9 @@
+// Servicio para la gestion de autenticacion
+
+//Internal imports
 import api from './api';
 import { User, AuthResponse } from '../types/user';
+
 
 export const authService = {
   login: async (email: string, password: string): Promise<AuthResponse> => {

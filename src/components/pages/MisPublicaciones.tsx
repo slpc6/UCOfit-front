@@ -1,3 +1,6 @@
+// Pagina donde el usuario puede ver sus publicaciones
+
+//External imports
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -18,11 +21,16 @@ import {
   TextField
 } from '@mui/material';
 import { motion } from 'framer-motion';
-import { HomeContainer, PublicacionCard } from './styles/Home.styles';
-import { publicacionService, Publicacion } from '../../services/publicacionService';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+
+
+//Internal imports
+import { Publicacion } from '../../types/publicacion';
+import { HomeContainer, PublicacionCard } from './styles/Home.styles';
+import { publicacionService} from '../../services/publicacionService';
+
 
 export const MisPublicaciones = () => {
   const navigate = useNavigate();

@@ -1,3 +1,6 @@
+// Pagina donde el usuario puede crear una publicacion
+
+//External imports
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -11,7 +14,11 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { HomeContainer } from './styles/Home.styles';
+
+
+//Internal imports
 import { publicacionService } from '../../services/publicacionService';
+
 
 export const CrearPublicacion = () => {
   const navigate = useNavigate();

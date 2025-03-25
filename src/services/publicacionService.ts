@@ -1,20 +1,10 @@
+// Servicio para la gestion de publicaciones
+
+
+//Internal imports
 import api from './api';
+import {Comentario } from '../types/comentario';
 
-export interface Publicacion {
-  _id?: string;
-  titulo: string;
-  descripcion: string;
-  video: string;
-  usuario_id?: string;
-  comentarios?: Comentario[];
-  puntuacion: number;
-}
-
-export interface Comentario {
-  usuario: string;
-  texto: string;
-  fecha: string;
-}
 
 export const publicacionService = {
   crearPublicacion: async (datos: { titulo: string; descripcion: string; video: string; usuario_id: string; comentarios: Comentario[]; puntuacion: number }) => {
@@ -44,18 +34,6 @@ export const publicacionService = {
 
   eliminarPublicacion: async (publicacionId: string) => {
     const response = await api.delete(`/publicacion/eliminar/${publicacionId}`);
-    return response.data;
-  },
-
-  comentarPublicacion: async (publicacionId: string, comentario: string) => {
-    const params = new URLSearchParams({ comentario });
-    const response = await api.post(`/publicacion/comentar/${publicacionId}?${params.toString()}`);
-    return response.data;
-  },
-
-  puntuarPublicacion: async (publicacionId: string, puntuacion: number) => {
-    const params = new URLSearchParams({ puntuacion: puntuacion.toString() });
-    const response = await api.post(`/publicacion/puntuar/${publicacionId}?${params.toString()}`);
     return response.data;
   }
 };

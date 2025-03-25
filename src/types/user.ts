@@ -4,7 +4,17 @@ export interface User {
     rol: string;
   }
   
+
   export interface AuthResponse {
     access_token: string;
     token_type: string;
+  }
+
+
+  export interface UserProfile {
+    nombre: string;
+    apellido: string;
+    email: string;
+    descripcion: string;
+    rol: string;
   }

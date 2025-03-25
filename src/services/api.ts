@@ -1,4 +1,8 @@
+// Servicio para la gestion de la API
+
+//External imports
 import axios from 'axios';
+
 
 const api = axios.create({
   baseURL: 'http://localhost:8000',

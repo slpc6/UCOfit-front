@@ -70,9 +70,6 @@ export const Navbar = () => {
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {token ? (
               <>
-                <NavButton onClick={() => navigate('/')}>
-                  Inicio
-                </NavButton>
                 <NavButton onClick={() => navigate('/mis-publicaciones')}>
                   <VideoLibraryIcon sx={{ mr: 1 }} />
                   Mis Publicaciones

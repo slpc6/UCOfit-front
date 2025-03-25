@@ -1,3 +1,7 @@
+// Pagina de inicio de la aplicacion
+
+
+//External imports
 import { useState, useEffect } from 'react';
 import { 
   Typography, 
@@ -17,9 +21,16 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { HomeContainer, StyledPaper, PublicacionGrid, PublicacionCard } from './styles/Home.styles';
-import { publicacionService, Publicacion } from '../../services/publicacionService';
 import CommentIcon from '@mui/icons-material/Comment';
 import StarIcon from '@mui/icons-material/Star';
+
+
+//Internal imports
+import { publicacionService } from '../../services/publicacionService';
+import { Publicacion } from '../../types/publicacion';
+import { puntuacionService } from '../../services/puntuacionService';
+import { comentarioService } from '../../services/comentarioService';
+
 
 export const Home = () => {
   const [publicaciones, setPublicaciones] = useState<Publicacion[]>([]);
@@ -51,7 +62,7 @@ export const Home = () => {
     
     setEnviandoComentario(true);
     try {
-      await publicacionService.comentarPublicacion(openComments, nuevoComentario);
+      await comentarioService.comentarPublicacion(openComments, nuevoComentario);
       // Recargar publicaciones para obtener el comentario nuevo
       const data = await publicacionService.listarPublicaciones();
       setPublicaciones(data);
@@ -67,7 +78,7 @@ export const Home = () => {
     if (!newValue || !publicacionId) return;
     
     try {
-      await publicacionService.puntuarPublicacion(publicacionId, newValue);
+      await puntuacionService.puntuarPublicacion(publicacionId, newValue);
       // Actualizar estado local
       setRatingValue(prev => ({
         ...prev,
