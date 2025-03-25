@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { TableRow, Box, Typography, TableCell } from '@mui/material';
+import { Box, Typography, TableCell } from '@mui/material';
 import { motion } from 'framer-motion';
 
 export const StyledTableRow = styled(motion.tr)(({ theme }) => ({

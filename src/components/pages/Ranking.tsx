@@ -6,7 +6,6 @@ import {
   Alert,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
