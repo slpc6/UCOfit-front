@@ -1,7 +1,6 @@
-export interface User {
+export interface UsuarioLogin {
     email: string;
     password: string;
-    rol: string;
   }
   
 
@@ -11,11 +10,10 @@ export interface User {
   }
 
 
-  export interface UserProfile {
+  export interface Usuario {
     nombre: string;
     apellido: string;
+    password: string;
     email: string;
     descripcion: string;
-    rol: string;
-    puntuacion: number;
   }

@@ -23,7 +23,7 @@ import BadgeIcon from '@mui/icons-material/Badge';
 
 
 //Internal imports
-import { UserProfile } from '../../types/user';
+import { UserProfile } from '../../types/usuario';
 import { ProfileContainer, ProfilePaper, ProfileField } from './styles/Profile.styles';
 import { authService } from '../../services/authService';
 

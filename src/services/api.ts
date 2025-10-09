@@ -9,10 +9,9 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true // Añade esta línea
+  withCredentials: true
 });
 
-// Interceptor para añadir el token a las peticiones
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -21,7 +20,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Interceptor para debug
 api.interceptors.response.use(
   response => response,
   error => {

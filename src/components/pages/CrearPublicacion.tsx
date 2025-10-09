@@ -20,7 +20,7 @@ import { HomeContainer } from './styles/Home.styles';
 import { publicacionService } from '../../services/publicacionService';
 
 
-export const CrearPublicacion = () => {
+const CrearPublicacion = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     titulo: '',
@@ -148,3 +148,5 @@ export const CrearPublicacion = () => {
     </HomeContainer>
   );
 };
+
+export default CrearPublicacion;

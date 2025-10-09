@@ -27,12 +27,12 @@ import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 
 
 //Internal imports
-import { UserProfile } from '../../types/user';
+import { UserProfile } from '../../types/usuario';
 import { publicacionService } from '../../services/publicacionService';
 import { authService } from '../../services/authService';
 
 
-export const Profile = () => {
+const Profile = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -250,3 +250,5 @@ export const Profile = () => {
     </ProfileContainer>
   );
 };
+
+export default Profile;

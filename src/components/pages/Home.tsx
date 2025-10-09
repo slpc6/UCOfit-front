@@ -32,7 +32,7 @@ import { puntuacionService } from '../../services/puntuacionService';
 import { comentarioService } from '../../services/comentarioService';
 
 
-export const Home = () => {
+const Home = () => {
   const [publicaciones, setPublicaciones] = useState<Publicacion[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -270,3 +270,5 @@ export const Home = () => {
     </HomeContainer>
   );
 };
+
+export default Home;

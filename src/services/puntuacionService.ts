@@ -2,7 +2,7 @@
 
 //Internal imports
 import api from './api';
-import { UserProfile } from '../types/user';
+import { UserProfile } from '../types/usuario';
 
 interface RankingResponse {
     usuarios: UserProfile[];

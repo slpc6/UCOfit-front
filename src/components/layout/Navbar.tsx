@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { 
-  Toolbar, 
+import {
   Typography, 
   Box,
   IconButton,
@@ -25,7 +24,7 @@ export const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate('/login');
+    navigate('/autenticacion/login');
   };
 
   const navigateToHome = () => {

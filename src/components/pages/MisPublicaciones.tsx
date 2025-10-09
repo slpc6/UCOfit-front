@@ -32,7 +32,7 @@ import { HomeContainer, PublicacionCard } from './styles/Home.styles';
 import { publicacionService} from '../../services/publicacionService';
 
 
-export const MisPublicaciones = () => {
+const MisPublicaciones = () => {
   const navigate = useNavigate();
   const [publicaciones, setPublicaciones] = useState<Publicacion[]>([]);
   const [loading, setLoading] = useState(true);
@@ -287,3 +287,5 @@ export const MisPublicaciones = () => {
     </HomeContainer>
   );
 };
+
+export default MisPublicaciones;

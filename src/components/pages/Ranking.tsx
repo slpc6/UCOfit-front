@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { puntuacionService } from '../../services/puntuacionService';
-import { UserProfile } from '../../types/user';
+import { UserProfile } from '../../types/usuario';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import PersonIcon from '@mui/icons-material/Person';
@@ -40,7 +40,7 @@ const getMedalColor = (position: number) => {
   }
 };
 
-export const Ranking = () => {
+const Ranking = () => {
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -170,3 +170,5 @@ export const Ranking = () => {
     </motion.div>
   );
 };
+
+export default Ranking;

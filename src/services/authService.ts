@@ -2,35 +2,29 @@
 
 //Internal imports
 import api from './api';
-import { User, AuthResponse } from '../types/user';
+import { UsuarioLogin, AuthResponse } from '../types/usuario';
 
 
 export const authService = {
-  login: async (email: string, password: string): Promise<AuthResponse> => {
+  login: async (data: UsuarioLogin): Promise<AuthResponse> => {
     const formData = new URLSearchParams();
-    formData.append('username', email);
-    formData.append('password', password);
+    formData.append('username', data.email);
+    formData.append('password', data.password);
     
-    const response = await api.post<AuthResponse>('/login', formData, {
+    const response = await api.post<AuthResponse>('/usuario/login', formData, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     });
     return response.data;
   },
-  
-  register: async (userData: User) => {
-    const response = await api.post('/usuario/registrar', userData);
-    return response.data;
-  },
-
-  getProfile: async () => {
-    const response = await api.get('/usuario/perfil');
-    return response.data;
-  },
-
-  deleteAccount: async () => {
-    const response = await api.delete('/usuario/eliminar');
+  logout: async (): Promise<AuthResponse> => {
+    localStorage.setItem('token', '');
+    const response = await api.post<AuthResponse>('/usuario/logout', {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
     return response.data;
   }
 };
