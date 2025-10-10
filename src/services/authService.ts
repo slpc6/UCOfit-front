@@ -1,8 +1,9 @@
 // Servicio para la gestion de autenticacion
 
-//Internal imports
+
 import api from './api';
-import { UsuarioLogin, AuthResponse } from '../types/usuario';
+import { UsuarioLogin } from '../types/usuario';
+import { AuthResponse } from '../types/response';
 
 
 export const authService = {
@@ -19,7 +20,7 @@ export const authService = {
     return response.data;
   },
   logout: async (): Promise<AuthResponse> => {
-    localStorage.setItem('token', '');
+    localStorage.removeItem('token');
     const response = await api.post<AuthResponse>('/usuario/logout', {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'

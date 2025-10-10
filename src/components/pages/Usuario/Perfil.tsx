@@ -1,6 +1,3 @@
-// Pagina de perfil del usuario
-
-//External imports
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -17,24 +14,21 @@ import {
   Box
 } from '@mui/material';
 import { motion } from 'framer-motion';
-import { ProfileContainer, ProfilePaper, ProfileField } from './styles/Home.styles';
+import { LoginContainer, LoginPaper } from '../Autenticacion/Login/style';
 import DeleteIcon from '@mui/icons-material/Delete';
-import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import DescriptionIcon from '@mui/icons-material/Description';
 import BadgeIcon from '@mui/icons-material/Badge';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 
-
-//Internal imports
-import { UserProfile } from '../../types/usuario';
-import { publicacionService } from '../../services/publicacionService';
-import { authService } from '../../services/authService';
+import { Usuario } from '../../../types/usuario';
+import { publicacionService } from '../../../services/publicacionService';
+import { userService } from '../../../services/usuarioService';
 
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState<UserProfile | null>(null);
+  const [userData, setUserData] = useState<Usuario | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
@@ -44,11 +38,13 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Obtener perfil del usuario
-        const response = await authService.getProfile();
-        setUserData(response.usuario);
-        
-        // Obtener conteo de publicaciones
+        const response = await userService.perfil();
+        if (response.data) {
+          setUserData(response.data.usuario);
+        } else {
+          setError(response.message || 'Error al cargar el perfil');
+        }
+
         const publicaciones = await publicacionService.listarPublicacionesUsuario();
         setPublicacionesCount(publicaciones.length);
       } catch (err) {
@@ -64,9 +60,14 @@ const Profile = () => {
   const handleDeleteAccount = async () => {
     setDeleteLoading(true);
     try {
-      await authService.deleteAccount();
-      localStorage.removeItem('token');
-      navigate('/login');
+      const response = await userService.eliminar();
+      if (response.data) {
+        localStorage.removeItem('token');
+        navigate('/autenticacion/login');
+      } else {
+        setError(response.message || 'Error al eliminar la cuenta');
+        setOpenDialog(false);
+      }
     } catch (err) {
       setError('Error al eliminar la cuenta');
       setOpenDialog(false);
@@ -82,20 +83,21 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <ProfileContainer sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+      <LoginContainer sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
         <CircularProgress />
-      </ProfileContainer>
+      </LoginContainer>
     );
   }
 
   return (
-    <ProfileContainer>
+    <LoginContainer>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
+        style={{ width: '100%', maxWidth: '600px' }}
       >
-        <ProfilePaper elevation={3}>
+        <LoginPaper elevation={3}>
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
             <Avatar 
               sx={{ 
@@ -121,46 +123,48 @@ const Profile = () => {
           </Box>
 
           {error && (
-            <Alert severity="error" sx={{ mb: 3 }}>
-              {error}
-            </Alert>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError('')}>
+                {error}
+              </Alert>
+            </motion.div>
           )}
 
           {userData && (
             <>
-              <ProfileField>
-                <Typography variant="subtitle2" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ mb: 3 }}>
+                <Typography variant="subtitle2" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                   <BadgeIcon fontSize="small" /> Nombre Completo
                 </Typography>
                 <Typography variant="h6">
                   {userData.nombre} {userData.apellido}
                 </Typography>
-              </ProfileField>
+              </Box>
 
               <Divider sx={{ my: 3 }} />
 
-              <ProfileField>
-                <Typography variant="subtitle2" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ mb: 3 }}>
+                <Typography variant="subtitle2" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                   <EmailIcon fontSize="small" /> Correo Electrónico
                 </Typography>
                 <Typography variant="h6">{userData.email}</Typography>
-              </ProfileField>
+              </Box>
 
               <Divider sx={{ my: 3 }} />
 
-              <ProfileField>
-                <Typography variant="subtitle2" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ mb: 3 }}>
+                <Typography variant="subtitle2" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                   <DescriptionIcon fontSize="small" /> Descripción
                 </Typography>
                 <Typography variant="body1">
                   {userData.descripcion || 'Sin descripción'}
                 </Typography>
-              </ProfileField>
+              </Box>
 
               <Divider sx={{ my: 3 }} />
 
-              <ProfileField>
-                <Typography variant="subtitle2" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ mb: 3 }}>
+                <Typography variant="subtitle2" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                   <VideoLibraryIcon fontSize="small" /> Publicaciones
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -175,29 +179,9 @@ const Profile = () => {
                     Ver mis publicaciones
                   </Button>
                 </Box>
-              </ProfileField>
+              </Box>
 
               <Divider sx={{ my: 3 }} />
-
-              <ProfileField>
-                <Typography variant="subtitle2" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <PersonIcon fontSize="small" /> Rol
-                </Typography>
-                <Typography 
-                  variant="h6" 
-                  sx={{ 
-                    textTransform: 'capitalize',
-                    display: 'inline-block',
-                    bgcolor: userData.rol === 'administrador' ? 'secondary.main' : 'primary.main',
-                    color: 'white',
-                    px: 2,
-                    py: 0.5,
-                    borderRadius: 1
-                  }}
-                >
-                  {userData.rol}
-                </Typography>
-              </ProfileField>
 
               <motion.div
                 whileHover={{ scale: 1.02 }}
@@ -220,7 +204,7 @@ const Profile = () => {
               </motion.div>
             </>
           )}
-        </ProfilePaper>
+        </LoginPaper>
 
         <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
           <DialogTitle>¿Estás seguro?</DialogTitle>
@@ -247,7 +231,7 @@ const Profile = () => {
           </DialogActions>
         </Dialog>
       </motion.div>
-    </ProfileContainer>
+    </LoginContainer>
   );
 };
 

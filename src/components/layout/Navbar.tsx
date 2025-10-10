@@ -70,7 +70,7 @@ export const Navbar = () => {
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {token ? (
               <>
-                <NavButton onClick={() => navigate('/')}>
+                <NavButton onClick={() => navigate('/home')}>
                   Inicio
                 </NavButton>
                 <NavButton onClick={() => navigate('/ranking')}>
@@ -85,7 +85,7 @@ export const Navbar = () => {
                   <AddIcon sx={{ mr: 1 }} />
                   Nueva Publicación
                 </NavButton>
-                <NavButton onClick={() => navigate('/profile')}>
+                <NavButton onClick={() => navigate('/usuario/perfil')}>
                   Perfil
                 </NavButton>
                 <NavButton onClick={handleLogout}>
