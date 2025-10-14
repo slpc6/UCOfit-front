@@ -5,8 +5,9 @@ export interface Publicacion {
     _id?: string;
     titulo: string;
     descripcion: string;
-    video: string;
+    video: string | File | null;
+    video_url?: string;
     usuario_id?: string;
-    comentarios?: Comentario[];
-    puntuacion: number;
-  }
+    comentarios?: Comentario[] | Record<string, any>;
+    puntuacion?: number;
+}

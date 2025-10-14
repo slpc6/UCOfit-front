@@ -27,9 +27,9 @@ import AddIcon from '@mui/icons-material/Add';
 
 
 //Internal imports
-import { Publicacion } from '../../types/publicacion';
-import { HomeContainer, PublicacionCard } from './styles/Home.styles';
-import { publicacionService} from '../../services/publicacionService';
+import { Publicacion } from '../../../types/publicacion';
+import { HomeContainer, PublicacionCard } from '../styles/Home.styles';
+import { publicacionService} from '../../../services/publicacionService';
 
 
 const MisPublicaciones = () => {
@@ -104,18 +104,6 @@ const MisPublicaciones = () => {
     setEditDialogOpen(publicacion._id || null);
   };
 
-  const getVideoEmbedUrl = (url: string) => {
-    if (url.includes('youtube.com/watch?v=')) {
-      const videoId = url.split('v=')[1].split('&')[0];
-      return `https://www.youtube.com/embed/${videoId}`;
-    }
-    if (url.includes('youtu.be/')) {
-      const videoId = url.split('youtu.be/')[1];
-      return `https://www.youtube.com/embed/${videoId}`;
-    }
-    return url;
-  };
-
   if (loading) {
     return (
       <HomeContainer sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -169,12 +157,15 @@ const MisPublicaciones = () => {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
                   <PublicacionCard>
-                    <CardMedia
-                      component="iframe"
-                      height="200"
-                      src={getVideoEmbedUrl(publicacion.video)}
-                      sx={{ border: 'none' }}
-                    />
+                    {publicacion.video_url ? (
+                      <CardMedia
+                        component="video"
+                        height="200"
+                        src={publicacion.video_url}
+                        sx={{ border: 'none' }}
+                        controls
+                      />
+                    ) : null}
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Typography variant="h5" component="h3" gutterBottom>
                         {publicacion.titulo}

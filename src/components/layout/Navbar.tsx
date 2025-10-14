@@ -29,7 +29,7 @@ export const Navbar = () => {
 
   const navigateToHome = () => {
     if (token) {
-      navigate('/');
+      navigate('/home');
     } else {
       navigate('/login');
     }
@@ -77,11 +77,11 @@ export const Navbar = () => {
                   <LeaderboardIcon sx={{ mr: 1 }} />
                   Ranking
                 </NavButton>
-                <NavButton onClick={() => navigate('/mis-publicaciones')}>
+                <NavButton onClick={() => navigate('publicacion/mispublicaciones')}>
                   <VideoLibraryIcon sx={{ mr: 1 }} />
                   Mis Publicaciones
                 </NavButton>
-                <NavButton onClick={() => navigate('/crear-publicacion')}>
+                <NavButton onClick={() => navigate('publicacion/crearpublicacion')}>
                   <AddIcon sx={{ mr: 1 }} />
                   Nueva Publicación
                 </NavButton>

@@ -1,45 +1,30 @@
 // Pagina de inicio de la aplicacion
 
-
 //External imports
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Typography, 
   CardContent, 
   CardActions, 
   Button, 
-  Rating, 
   CircularProgress,
   Alert,
-  CardMedia,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  Box
+  CardMedia
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { HomeContainer, StyledPaper, PublicacionGrid, PublicacionCard } from './styles/Home.styles';
-import CommentIcon from '@mui/icons-material/Comment';
-import StarIcon from '@mui/icons-material/Star';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 
-//Internal imports
 import { publicacionService } from '../../services/publicacionService';
 import { Publicacion } from '../../types/publicacion';
-import { puntuacionService } from '../../services/puntuacionService';
-import { comentarioService } from '../../services/comentarioService';
-
 
 const Home = () => {
+  const navigate = useNavigate();
   const [publicaciones, setPublicaciones] = useState<Publicacion[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [openComments, setOpenComments] = useState<string | null>(null);
-  const [nuevoComentario, setNuevoComentario] = useState('');
-  const [enviandoComentario, setEnviandoComentario] = useState(false);
-  const [ratingValue, setRatingValue] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const fetchPublicaciones = async () => {
@@ -56,60 +41,6 @@ const Home = () => {
 
     fetchPublicaciones();
   }, []);
-
-  const handleComentarioSubmit = async () => {
-    if (!openComments || !nuevoComentario.trim()) return;
-    
-    setEnviandoComentario(true);
-    try {
-      await comentarioService.comentarPublicacion(openComments, nuevoComentario);
-      // Recargar publicaciones para obtener el comentario nuevo
-      const data = await publicacionService.listarPublicaciones();
-      setPublicaciones(data);
-      setNuevoComentario('');
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setEnviandoComentario(false);
-    }
-  };
-
-  const handleRating = async (publicacionId: string, newValue: number | null) => {
-    if (!newValue || !publicacionId) return;
-    
-    try {
-      await puntuacionService.puntuarPublicacion(publicacionId, newValue);
-      // Actualizar estado local
-      setRatingValue(prev => ({
-        ...prev,
-        [publicacionId]: newValue
-      }));
-      // Actualizar publicaciones
-      const updatedPublicaciones = publicaciones.map(pub => 
-        pub._id === publicacionId ? { ...pub, puntuacion: newValue } : pub
-      );
-      setPublicaciones(updatedPublicaciones);
-    } catch (err) {
-      console.error('Error al puntuar:', err);
-      setError('Error al enviar puntuación');
-    }
-  };
-
-  const getVideoEmbedUrl = (url: string) => {
-    // Convertir URL de YouTube a URL embebible
-    if (url.includes('youtube.com/watch?v=')) {
-      const videoId = url.split('v=')[1].split('&')[0];
-      return `https://www.youtube.com/embed/${videoId}`;
-    }
-    if (url.includes('youtu.be/')) {
-      const videoId = url.split('youtu.be/')[1];
-      return `https://www.youtube.com/embed/${videoId}`;
-    }
-    else{
-      url = '';
-    }
-    return url;
-  };
 
   if (loading) {
     return (
@@ -169,17 +100,26 @@ const Home = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <PublicacionCard>
-                <CardMedia
-                  component="iframe"
-                  height="200"
-                  src={getVideoEmbedUrl(publicacion.video)}
-                  sx={{ border: 'none' }}
-                />
+                {publicacion.video_url ? (
+                  <CardMedia
+                    component="video"
+                    height="200"
+                    src={publicacion.video_url}
+                    sx={{ border: 'none' }}
+                    controls
+                  />
+                ) : (
+                  <div style={{ height: 200, backgroundColor: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Typography variant="body2" color="text.secondary">
+                      Video no disponible
+                    </Typography>
+                  </div>
+                )}
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant="h5" component="h3" gutterBottom>
                     {publicacion.titulo}
                   </Typography>
-                  <Typography variant="body1" color="text.secondary">
+                  <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
                     {publicacion.descripcion}
                   </Typography>
                   <Typography 
@@ -190,82 +130,21 @@ const Home = () => {
                     Por: {publicacion.usuario_id}
                   </Typography>
                 </CardContent>
-                <CardActions sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
+                <CardActions sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
                   <Button 
-                    startIcon={<CommentIcon />}
-                    variant="outlined" 
-                    size="small"
-                    onClick={() => setOpenComments(publicacion._id || null)}
+                    startIcon={<VisibilityIcon />}
+                    variant="contained" 
+                    size="large"
+                    onClick={() => navigate(`/publicacion/${publicacion._id}`)}
+                    fullWidth
                   >
-                    Comentarios
+                    Ver Detalles
                   </Button>
-                  <Rating
-                    value={ratingValue[publicacion._id || ''] || publicacion.puntuacion}
-                    onChange={(_, newValue) => publicacion._id && handleRating(publicacion._id, newValue)}
-                    emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-                  />
                 </CardActions>
               </PublicacionCard>
             </motion.div>
           ))}
         </PublicacionGrid>
-
-        {/* Diálogo de comentarios */}
-        <Dialog 
-          open={!!openComments} 
-          onClose={() => setOpenComments(null)}
-          fullWidth
-          maxWidth="sm"
-        >
-          <DialogTitle>Comentarios</DialogTitle>
-          <DialogContent dividers>
-            {openComments && 
-             publicaciones.find(p => p._id === openComments)?.comentarios ? 
-              (Object.entries(publicaciones.find(p => p._id === openComments)?.comentarios || {}).length > 0 ? 
-                Object.entries(publicaciones.find(p => p._id === openComments)?.comentarios || {}).map(([id, comentario]) => (
-                  <Box key={id} sx={{ mb: 2, p: 2, bgcolor: '#f5f5f5', borderRadius: 1 }}>
-                    <Typography variant="subtitle2">{comentario.usuario}</Typography>
-                    <Typography variant="body1">{comentario.texto}</Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {new Date(comentario.fecha).toLocaleString()}
-                    </Typography>
-                  </Box>
-                ))
-                : 
-                <Typography variant="body1" sx={{ py: 2 }}>
-                  No hay comentarios aún. ¡Sé el primero en comentar!
-                </Typography>
-              )
-              : 
-              <Typography variant="body1" sx={{ py: 2 }}>
-                No hay comentarios aún. ¡Sé el primero en comentar!
-              </Typography>
-            }
-            <Box sx={{ mt: 3 }}>
-              <TextField
-                fullWidth
-                multiline
-                rows={3}
-                label="Añadir comentario"
-                value={nuevoComentario}
-                onChange={(e) => setNuevoComentario(e.target.value)}
-                disabled={enviandoComentario}
-              />
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenComments(null)}>
-              Cerrar
-            </Button>
-            <Button 
-              onClick={handleComentarioSubmit}
-              variant="contained"
-              disabled={!nuevoComentario.trim() || enviandoComentario}
-            >
-              {enviandoComentario ? <CircularProgress size={24} /> : 'Comentar'}
-            </Button>
-          </DialogActions>
-        </Dialog>
       </motion.div>
     </HomeContainer>
   );

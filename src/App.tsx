@@ -49,6 +49,7 @@ function App() {
           {routes.map(({ path, Component }) => (
             <Route key={path} path={path} element={<Component />} />
           ))}
+          <Route path="/publicacion/:id" element={<GetPageComponent path="/publicacion/verpublicacion" />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
           </Route>
         </Routes>

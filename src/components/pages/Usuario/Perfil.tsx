@@ -174,7 +174,7 @@ const Profile = () => {
                   <Button 
                     variant="outlined"
                     size="small"
-                    onClick={() => navigate('/mis-publicaciones')}
+                    onClick={() => navigate('/publicacion/mispublicaciones')}
                   >
                     Ver mis publicaciones
                   </Button>

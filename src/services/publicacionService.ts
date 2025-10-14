@@ -3,12 +3,22 @@
 
 //Internal imports
 import api from './api';
-import {Comentario } from '../types/comentario';
-
+import {Publicacion} from '../types/publicacion'
 
 export const publicacionService = {
-  crearPublicacion: async (datos: { titulo: string; descripcion: string; video: string; usuario_id: string; comentarios: Comentario[]; puntuacion: number }) => {
-    const response = await api.post('/publicacion/crear', datos);
+  crearPublicacion: async (datos: Publicacion) => {
+    const formData = new FormData();
+    formData.append('titulo', datos.titulo);
+    formData.append('descripcion', datos.descripcion);
+    if (datos.video) {
+      formData.append('video', datos.video);
+    }
+    
+    const response = await api.post('/publicacion/crear', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
     return response.data;
   },
 

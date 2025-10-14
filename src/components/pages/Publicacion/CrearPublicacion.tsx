@@ -1,7 +1,7 @@
 // Pagina donde el usuario puede crear una publicacion
 
 //External imports
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Typography, 
@@ -13,26 +13,27 @@ import {
   Box
 } from '@mui/material';
 import { motion } from 'framer-motion';
-import { HomeContainer } from './styles/Home.styles';
+import { HomeContainer } from '../styles/Home.styles';
 
 
 //Internal imports
-import { publicacionService } from '../../services/publicacionService';
+import { publicacionService } from '../../../services/publicacionService';
+import { Publicacion } from '../../../types/publicacion';
+
 
 
 const CrearPublicacion = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<Publicacion>({
     titulo: '',
     descripcion: '',
-    video: '',
+    video: null,
     usuario_id: '',
     comentarios: [],
-    puntuacion: 0
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [videoPreview, setVideoPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,18 +51,6 @@ const CrearPublicacion = () => {
     }
   };
 
-  const handleVideoInput = (url: string) => {
-    setForm({...form, video: url});
-    if (url.includes('youtube.com/watch?v=')) {
-      const videoId = url.split('v=')[1].split('&')[0];
-      setVideoPreview(`https://www.youtube.com/embed/${videoId}`);
-    } else if (url.includes('youtu.be/')) {
-      const videoId = url.split('youtu.be/')[1];
-      setVideoPreview(`https://www.youtube.com/embed/${videoId}`);
-    } else {
-      setVideoPreview(null);
-    }
-  };
 
   return (
     <HomeContainer>
@@ -99,32 +88,17 @@ const CrearPublicacion = () => {
               onChange={(e) => setForm({...form, descripcion: e.target.value})}
             />
             
-            <TextField
-              label="URL del Video"
-              fullWidth
-              margin="normal"
-              required
-              value={form.video}
-              onChange={(e) => handleVideoInput(e.target.value)}
-              helperText="Ingresa la URL de YouTube para el video"
+            <input
+              type="file"
+              accept="video/mp4"
+              onChange={(e) => {
+                const file = e.target.files?.[0] || null;
+                setForm({ ...form, video: file });
+              }}
+              className="border border-gray-300 rounded-md p-2"
+              ref={fileInputRef }
             />
 
-            {videoPreview && (
-              <Box sx={{ mt: 3, mb: 3 }}>
-                <Typography variant="subtitle1" sx={{ mb: 1 }}>
-                  Vista Previa:
-                </Typography>
-                <iframe
-                  width="100%"
-                  height="315"
-                  src={videoPreview}
-                  title="Vista previa del video"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </Box>
-            )}
             
             <Box sx={{ mt: 4, display: 'flex', gap: 2 }}>
               <Button
