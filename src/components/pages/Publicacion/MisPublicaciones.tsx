@@ -99,7 +99,7 @@ const MisPublicaciones = () => {
     setEditForm({
       titulo: publicacion.titulo,
       descripcion: publicacion.descripcion,
-      video: publicacion.video
+      video: typeof publicacion.video === 'string' ? publicacion.video : ''
     });
     setEditDialogOpen(publicacion._id || null);
   };

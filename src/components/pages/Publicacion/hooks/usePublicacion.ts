@@ -13,8 +13,8 @@ export const usePublicacion = (id: string | undefined) => {
       if (!id) return;
       try {
         setLoading(true);
-        const data = await publicacionService.listarPublicaciones();
-        const encontrada = data.find((p) => p._id === id);
+        const encontrada = await publicacionService.encontrarPublicacion(id);
+        
         if (encontrada) {
           setPublicacion(encontrada);
         } else {

@@ -4,18 +4,16 @@ import { AuthResponse, RespuestaAPI } from '../types/response';
 
 export const userService = {
   registrar: async (data: Usuario): Promise<AuthResponse> => {
-    const formData = new URLSearchParams();
+    const formData = new FormData();
     formData.append('nombre', data.nombre);
     formData.append('apellido',data.apellido );
     formData.append('email', data.email);
     formData.append('password', data.password);
     formData.append('descripcion', data.descripcion);
+
+    console.log(formData);
     
-    const response = await api.post<AuthResponse>('/usuario/registrar', formData, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    });
+    const response = await api.post<AuthResponse>('/usuario/registrar', formData);
     return response.data;
   },
   perfil: async (): Promise<RespuestaAPI> => {

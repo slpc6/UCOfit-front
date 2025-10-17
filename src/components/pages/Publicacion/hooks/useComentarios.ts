@@ -19,8 +19,7 @@ export const useComentarios = (
 
     try {
       await comentarioService.comentarPublicacion(id, nuevoComentario);
-      const data = await publicacionService.listarPublicaciones();
-      const actualizada = data.find((p) => p._id === id);
+      const actualizada = await publicacionService.encontrarPublicacion(id);
       if (actualizada) {
         setPublicacion(actualizada);
       }

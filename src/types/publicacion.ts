@@ -5,7 +5,7 @@ export interface Publicacion {
     _id?: string;
     titulo: string;
     descripcion: string;
-    video: string | File | null;
+    video: File | null | string;
     video_url?: string;
     usuario_id?: string;
     comentarios?: Comentario[] | Record<string, any>;

@@ -2,10 +2,10 @@
 
 //Internal imports
 import api from './api';
-import { UserProfile } from '../types/usuario';
+import { Usuario } from '../types/usuario';
 
 interface RankingResponse {
-    usuarios: UserProfile[];
+    usuarios: Usuario[];
 }
 
 export const puntuacionService = {

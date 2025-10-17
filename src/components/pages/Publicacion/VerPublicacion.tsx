@@ -83,7 +83,7 @@ const VerPublicacion = () => {
         </Box>
 
         <PublicacionCard sx={{ mb: 4 }}>
-          {publicacion.video_url ? (
+          {publicacion.video ? (
             <CardMedia
               component="video"
               height="400"

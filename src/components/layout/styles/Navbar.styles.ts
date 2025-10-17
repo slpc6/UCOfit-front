@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { AppBar, Button, Toolbar } from '@mui/material';
 
-export const StyledAppBar = styled(AppBar)(({ theme }) => ({
+export const StyledAppBar = styled(AppBar)(({}) => ({
   background: 'linear-gradient(45deg, #1B5E20 30%, #4CAF50 90%)',
   boxShadow: '0 3px 5px 2px rgba(76, 175, 80, .3)',
   width: '100%',

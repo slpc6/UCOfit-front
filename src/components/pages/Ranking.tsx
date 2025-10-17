@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { puntuacionService } from '../../services/puntuacionService';
-import { UserProfile } from '../../types/usuario';
+import { Usuario } from '../../types/usuario';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import PersonIcon from '@mui/icons-material/Person';
@@ -41,7 +41,7 @@ const getMedalColor = (position: number) => {
 };
 
 const Ranking = () => {
-  const [users, setUsers] = useState<UserProfile[]>([]);
+  const [users, setUsers] = useState<Usuario[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -132,7 +132,7 @@ const Ranking = () => {
                       <UserInfoBox>
                         <Tooltip title={user.descripcion || 'Sin descripción'}>
                           <Avatar sx={{ 
-                            bgcolor: user.rol === 'administrador' ? 'secondary.main' : 'primary.main'
+                            bgcolor: user.nombre === 'administrador' ? 'secondary.main' : 'primary.main'
                           }}>
                             {user.nombre.charAt(0)}{user.apellido.charAt(0)}
                           </Avatar>
@@ -149,15 +149,15 @@ const Ranking = () => {
                     </StyledTableCell>
                     <StyledTableCell>
                       <Chip
-                        icon={user.rol === 'administrador' ? <AdminPanelSettingsIcon /> : <PersonIcon />}
-                        label={user.rol}
-                        color={user.rol === 'administrador' ? 'secondary' : 'default'}
+                        icon={user.nombre === 'administrador' ? <AdminPanelSettingsIcon /> : <PersonIcon />}
+                        label={user.nombre}
+                        color={user.nombre === 'administrador' ? 'secondary' : 'default'}
                         variant="outlined"
                       />
                     </StyledTableCell>
                     <StyledTableCell align="right">
                       <ScoreTypography variant="h6">
-                        {user.puntuacion}
+                        {user.email}
                       </ScoreTypography>
                     </StyledTableCell>
                   </StyledTableRow>

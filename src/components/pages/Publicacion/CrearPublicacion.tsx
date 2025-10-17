@@ -21,13 +21,12 @@ import { publicacionService } from '../../../services/publicacionService';
 import { Publicacion } from '../../../types/publicacion';
 
 
-
 const CrearPublicacion = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState<Publicacion>({
     titulo: '',
     descripcion: '',
-    video: null,
+    video: '',
     usuario_id: '',
     comentarios: [],
   });

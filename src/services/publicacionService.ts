@@ -31,6 +31,16 @@ export const publicacionService = {
     const response = await api.get('/publicacion/usuario');
     return response.data.publicaciones;
   },
+  encontrarVideo: async (video_id: string) => {
+    const response = await api.get(`/publicacion/video/${video_id}`);
+    return response.data;
+  },
+  encontrarPublicacion: async (publicacion_id: string)=>{
+    const response = await api.get(`/publicacion/${publicacion_id}`);
+    response.data.video_url = 'http://localhost:8000/publicacion/video/'+ response.data.video;
+    return response.data;
+  },
+
 
   editarPublicacion: async (publicacionId: string, datos: { titulo?: string; descripcion?: string; video?: string }) => {
     const params = new URLSearchParams({ publicacion_id: publicacionId });
