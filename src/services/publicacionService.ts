@@ -38,7 +38,7 @@ export const publicacionService = {
   },
   encontrarPublicacion: async (publicacion_id: string)=>{
     const response = await api.get(`/publicacion/${publicacion_id}`);
-    response.data.video_url = 'http://localhost:8000/publicacion/video/'+ response.data.video;
+    response.data.video_url = api.defaults.baseURL + '/publicacion/video/' + response.data.video;
     return response.data;
   },
 
