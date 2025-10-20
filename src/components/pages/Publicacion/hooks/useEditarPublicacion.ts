@@ -1,7 +1,6 @@
 // src/components/pages/Publicacion/hooks/useEditarPublicacion.ts
 import { useState } from 'react';
 import { publicacionService } from '../../../../services/publicacionService';
-import { Publicacion } from '../../../../types/publicacion';
 
 export const useEditarPublicacion = (
   setError: (msg: string) => void
