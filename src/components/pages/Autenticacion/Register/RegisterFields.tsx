@@ -27,7 +27,10 @@ const RegisterFields = ({ formData, setFormData }: RegisterFieldsProps) => {
         margin="normal"
         label="Nombre"
         value={formData.nombre}
-        onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+        onChange={(e) => {
+          const newData = { ...formData, nombre: e.target.value };
+          setFormData(newData);
+        }}
         required
         InputProps={{
           startAdornment: (

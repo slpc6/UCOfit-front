@@ -5,9 +5,20 @@ import api from './api';
 
 
 export const comentarioService = {
-    comentarPublicacion: async (publicacionId: string, comentario: string) => {
-        const params = new URLSearchParams({ comentario });
-        const response = await api.post(`/comentario/comentar/${publicacionId}?${params.toString()}`);
+    comentarPublicacion: async (publicacionId: string, comentarioTexto: string) => {
+
+        const comentarioPayload = {
+            comentario_id: '',
+            usuario_id: '',
+            comentario: comentarioTexto,
+            fecha: new Date().toISOString()
+        };
+
+        const response = await api.post(
+            `/comentario/comentar/${publicacionId}`,
+            comentarioPayload,
+            { headers: { 'Content-Type': 'application/json' } }
+        );
         return response.data;
     }
 };

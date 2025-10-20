@@ -45,7 +45,7 @@ const VerPublicacion = () => {
   } = useComentarios(id, (p) => setPublicacion(p), setError);
 
   // Puntuación
-  const { ratingValue, handleRating } = usePuntuacion(id, publicacion, (p) => setPublicacion(p), setError);
+  const { ratingValue, promedio, totalPuntuaciones, loading: puntuacionLoading, handleRating } = usePuntuacion(id, publicacion, (p) => setPublicacion(p), setError);
 
   if (loading) {
     return (
@@ -132,7 +132,7 @@ const VerPublicacion = () => {
               size="large"
               onClick={() => setOpenComments(true)}
             >
-              Ver Comentarios ({Object.keys(publicacion.comentarios || {}).length})
+              Ver Comentarios ({Array.isArray(publicacion.comentarios) ? publicacion.comentarios.length : 0})
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Typography variant="body1" sx={{ mr: 1 }}>
@@ -143,7 +143,11 @@ const VerPublicacion = () => {
                 onChange={(_, newValue) => handleRating(newValue)}
                 emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
                 size="large"
+                disabled={puntuacionLoading}
               />
+              <Typography variant="body2" sx={{ ml: 1 }}>
+                {promedio.toFixed(1)} ({totalPuntuaciones} votos)
+              </Typography>
             </Box>
           </CardActions>
         </PublicacionCard>
@@ -151,14 +155,14 @@ const VerPublicacion = () => {
         <Dialog open={openComments} onClose={() => setOpenComments(false)} fullWidth maxWidth="md">
           <DialogTitle>Comentarios</DialogTitle>
           <DialogContent dividers>
-            {publicacion.comentarios && Object.keys(publicacion.comentarios).length > 0 ? (
-              Object.entries(publicacion.comentarios).map(([id, comentario]) => (
-                <Box key={id} sx={{ mb: 2, p: 2, bgcolor: '#f5f5f5', borderRadius: 1 }}>
+            {publicacion.comentarios && Array.isArray(publicacion.comentarios) && publicacion.comentarios.length > 0 ? (
+              publicacion.comentarios.map((comentario, index) => (
+                <Box key={comentario.comentario_id || index} sx={{ mb: 2, p: 2, bgcolor: '#f5f5f5', borderRadius: 1 }}>
                   <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
-                    {comentario.usuario}
+                    {comentario.usuario_id}
                   </Typography>
                   <Typography variant="body1" sx={{ mt: 1 }}>
-                    {comentario.texto}
+                    {comentario.comentario}
                   </Typography>
                   <Typography
                     variant="caption"

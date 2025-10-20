@@ -1,5 +1,6 @@
 export interface Comentario {
-    usuario: string;
-    texto: string;
+    comentario_id: string;
+    usuario_id: string;
+    comentario: string;
     fecha: string;
-  }
+}

@@ -1,21 +1,45 @@
-// Servicio para la gestion de puntuaciones
+// Servicio para la gestión de puntuaciones
 
 //Internal imports
 import api from './api';
-import { Usuario } from '../types/usuario';
 
-interface RankingResponse {
-    usuarios: Usuario[];
+export interface PuntuacionData {
+    usuario_id: string;
+    puntuacion: number;
+}
+
+export interface PuntuacionResponse {
+    promedio: number;
+    total_puntuaciones: number;
+    puntuaciones: Array<{
+        usuario_id: string;
+        puntuacion: number;
+        fecha: string;
+    }>;
 }
 
 export const puntuacionService = {
     puntuarPublicacion: async (publicacionId: string, puntuacion: number) => {
-        const params = new URLSearchParams({ puntuacion: puntuacion.toString() });
-        const response = await api.post(`/puntuacion/puntuar/${publicacionId}?${params.toString()}`);
+        const puntuacionData: PuntuacionData = {
+            usuario_id: '',
+            puntuacion: puntuacion
+        };
+
+        const response = await api.post(
+            `/puntuacion/puntuar/${publicacionId}`,
+            puntuacionData,
+            { headers: { 'Content-Type': 'application/json' } }
+        );
         return response.data;
     },
-    rankingUsuarios: async (): Promise<RankingResponse> => {
-        const response = await api.get<RankingResponse>('/puntuacion/ranking_usuarios');
+
+    obtenerPromedio: async (publicacionId: string): Promise<PuntuacionResponse> => {
+        const response = await api.get(`/puntuacion/promedio/${publicacionId}`);
+        return response.data;
+    },
+
+    eliminarPuntuacion: async (publicacionId: string) => {
+        const response = await api.delete(`/puntuacion/eliminar/${publicacionId}`);
         return response.data;
     }
 };
