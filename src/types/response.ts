@@ -8,3 +8,7 @@ export interface RespuestaAPI {
     message: string;
     data?: any;
   }
+
+export interface PublicacionResponse {
+    msg: string;
+  }

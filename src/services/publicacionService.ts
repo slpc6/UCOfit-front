@@ -3,7 +3,8 @@
 
 //Internal imports
 import api from './api';
-import {Publicacion} from '../types/publicacion'
+import {Publicacion} from '../types/publicacion';
+import {PublicacionResponse} from '../types/response';
 
 export const publicacionService = {
   crearPublicacion: async (datos: Publicacion) => {
@@ -42,17 +43,16 @@ export const publicacionService = {
   },
 
 
-  editarPublicacion: async (publicacionId: string, datos: { titulo?: string; descripcion?: string; video?: string }) => {
-    const params = new URLSearchParams({ publicacion_id: publicacionId });
+  editarPublicacion: async (publicacionId: string, datos: { titulo?: string; descripcion?: string }): Promise<PublicacionResponse> => {
+    const params = new URLSearchParams();
     if (datos.titulo) params.append('titulo', datos.titulo);
     if (datos.descripcion) params.append('descripcion', datos.descripcion);
-    if (datos.video) params.append('video', datos.video);
     
-    const response = await api.put(`/publicacion/editar?${params.toString()}`);
+    const response = await api.put(`/publicacion/editar/${publicacionId}?${params.toString()}`);
     return response.data;
   },
 
-  eliminarPublicacion: async (publicacionId: string) => {
+  eliminarPublicacion: async (publicacionId: string): Promise<PublicacionResponse> => {
     const response = await api.delete(`/publicacion/eliminar/${publicacionId}`);
     return response.data;
   }

@@ -1,4 +1,5 @@
 // src/components/pages/VerPublicacion/VerPublicacion.tsx
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
@@ -20,12 +21,20 @@ import {
 import CommentIcon from '@mui/icons-material/Comment';
 import StarIcon from '@mui/icons-material/Star';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { HomeContainer, PublicacionCard } from '../styles/Home.styles';
 
 // Hooks
 import { usePublicacion } from './hooks/usePublicacion';
 import { useComentarios } from './hooks/useComentarios';
 import { usePuntuacion } from './hooks/usePuntuacion';
+import { useEditarPublicacion } from './hooks/useEditarPublicacion';
+
+// Components
+import EditarPublicacion from './EditarPublicacion';
+// Services
+import { userService } from '../../../services/usuarioService';
 
 const VerPublicacion = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,6 +55,49 @@ const VerPublicacion = () => {
 
   // Puntuación
   const { ratingValue, promedio, totalPuntuaciones, loading: puntuacionLoading, handleRating } = usePuntuacion(id, publicacion, (p) => setPublicacion(p), setError);
+
+  // Editar/Eliminar
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const { loading: editLoading, eliminarPublicacion } = useEditarPublicacion(setError);
+  const [isOwner, setIsOwner] = useState(false);
+
+  // Determinar si el usuario autenticado es el dueño de la publicación
+  useEffect(() => {
+    let isMounted = true;
+    const checkOwner = async () => {
+      try {
+        const perfil = await userService.perfil();
+        const email = perfil?.data?.usuario?.email || perfil?.data?.email;
+        if (isMounted && publicacion) {
+          setIsOwner(!!email && email === publicacion.usuario_id);
+        }
+      } catch (e) {
+        if (isMounted) setIsOwner(false);
+      }
+    };
+    checkOwner();
+    return () => {
+      isMounted = false;
+    };
+  }, [publicacion]);
+
+  const handleEliminar = async () => {
+    if (!id || !publicacion) return;
+    
+    if (window.confirm('¿Estás seguro de que quieres eliminar esta publicación? Esta acción no se puede deshacer.')) {
+      try {
+        await eliminarPublicacion(id);
+        navigate('/home');
+      } catch (err) {
+        // El error ya se maneja en el hook
+      }
+    }
+  };
+
+  const handleEditSuccess = () => {
+    // Recargar la publicación después de editar
+    window.location.reload();
+  };
 
   if (loading) {
     return (
@@ -121,6 +173,30 @@ const VerPublicacion = () => {
             >
               Por: {publicacion.usuario_id}
             </Typography>
+            
+            {/* Botones de editar y eliminar - solo para el autor */}
+            {isOwner && (
+              <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
+                <Button
+                  startIcon={<EditIcon />}
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => setOpenEditDialog(true)}
+                  disabled={editLoading}
+                >
+                  Editar
+                </Button>
+                <Button
+                  startIcon={<DeleteIcon />}
+                  variant="outlined"
+                  color="error"
+                  onClick={handleEliminar}
+                  disabled={editLoading}
+                >
+                  Eliminar
+                </Button>
+              </Box>
+            )}
           </CardContent>
 
           <CardActions
@@ -203,6 +279,15 @@ const VerPublicacion = () => {
             </Button>
           </DialogActions>
         </Dialog>
+
+        {/* Dialog para editar publicación */}
+        <EditarPublicacion
+          open={openEditDialog}
+          onClose={() => setOpenEditDialog(false)}
+          publicacion={publicacion}
+          onSuccess={handleEditSuccess}
+          setError={setError}
+        />
       </motion.div>
     </HomeContainer>
   );
