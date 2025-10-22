@@ -10,4 +10,18 @@ export interface UsuarioLogin {
     password: string;
     email: string;
     descripcion: string;
+    foto_perfil?: string;
+    ciudad?: string;
+    telefono?: string;
+  }
+
+  export interface UsuarioActualizar {
+    nombre?: string;
+    apellido?: string;
+    email?: string;
+    password?: string;
+    descripcion?: string;
+    foto_perfil?: string;
+    ciudad?: string;
+    telefono?: string;
   }
