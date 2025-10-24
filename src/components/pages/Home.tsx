@@ -98,6 +98,161 @@ const Home = () => {
           </Typography>
         </StyledPaper>
 
+        {/* Sección informativa sobre UCOfit */}
+        <Box sx={{ mt: 6, mb: 6 }}>
+          <Typography 
+            variant="h3" 
+            component="h2" 
+            sx={{ 
+              mb: 4, 
+              fontWeight: 'bold', 
+              textAlign: 'center',
+              color: 'primary.main'
+            }}
+          >
+            🏃‍♂️ ¿Qué es UCOfit?
+          </Typography>
+          
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={6}>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2, color: 'primary.main' }}>
+                    🎯 ¿Cómo funciona?
+                  </Typography>
+                  <Typography variant="body1" sx={{ mb: 2 }}>
+                    UCOfit es una plataforma de fitness colaborativa donde puedes:
+                  </Typography>
+                  <Box component="ul" sx={{ pl: 2 }}>
+                    <Typography component="li" variant="body2" sx={{ mb: 1 }}>
+                      <strong>Crear retos:</strong> Establece objetivos de fitness y compártelos con la comunidad
+                    </Typography>
+                    <Typography component="li" variant="body2" sx={{ mb: 1 }}>
+                      <strong>Subir videos:</strong> Documenta tu progreso con videos de tus ejercicios
+                    </Typography>
+                    <Typography component="li" variant="body2" sx={{ mb: 1 }}>
+                      <strong>Competir:</strong> Participa en rankings y compite con otros usuarios
+                    </Typography>
+                    <Typography component="li" variant="body2" sx={{ mb: 1 }}>
+                      <strong>Motivarte:</strong> Recibe comentarios y puntuaciones de la comunidad
+                    </Typography>
+                  </Box>
+                </Card>
+              </motion.div>
+            </Grid>
+            
+            <Grid item xs={12} md={6}>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2, color: 'secondary.main' }}>
+                    🚀 ¿Por qué usar UCOfit?
+                  </Typography>
+                  <Typography variant="body1" sx={{ mb: 2 }}>
+                    Únete a una comunidad que te ayudará a alcanzar tus metas:
+                  </Typography>
+                  <Box component="ul" sx={{ pl: 2 }}>
+                    <Typography component="li" variant="body2" sx={{ mb: 1 }}>
+                      <strong>Motivación constante:</strong> La comunidad te anima a seguir adelante
+                    </Typography>
+                    <Typography component="li" variant="body2" sx={{ mb: 1 }}>
+                      <strong>Competencia sana:</strong> Compite de manera amigable con otros usuarios
+                    </Typography>
+                    <Typography component="li" variant="body2" sx={{ mb: 1 }}>
+                      <strong>Progreso visible:</strong> Ve tu evolución a través de videos y estadísticas
+                    </Typography>
+                    <Typography component="li" variant="body2" sx={{ mb: 1 }}>
+                      <strong>Flexibilidad:</strong> Participa cuando quieras, a tu ritmo
+                    </Typography>
+                  </Box>
+                </Card>
+              </motion.div>
+            </Grid>
+          </Grid>
+        </Box>
+
+        {/* Sección de información útil */}
+        <Box sx={{ mt: 6, mb: 6 }}>
+          <Typography 
+            variant="h3" 
+            component="h2" 
+            sx={{ 
+              mb: 4, 
+              fontWeight: 'bold', 
+              textAlign: 'center',
+              color: 'primary.main'
+            }}
+          >
+            💡 Información Útil
+          </Typography>
+          
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6} md={4}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                <Card sx={{ height: '100%', textAlign: 'center', p: 3 }}>
+                  <Typography variant="h4" sx={{ mb: 2 }}>🏆</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
+                    Sistema de Puntuación
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Cada publicación recibe puntuaciones de 1 a 5 estrellas de la comunidad. 
+                    Tu puntuación total determina tu posición en el ranking.
+                  </Typography>
+                </Card>
+              </motion.div>
+            </Grid>
+            
+            <Grid item xs={12} sm={6} md={4}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <Card sx={{ height: '100%', textAlign: 'center', p: 3 }}>
+                  <Typography variant="h4" sx={{ mb: 2 }}>⏰</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
+                    Retos con Tiempo
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Los retos tienen fechas de expiración. Asegúrate de participar antes de que termine 
+                    el plazo para sumar puntos.
+                  </Typography>
+                </Card>
+              </motion.div>
+            </Grid>
+            
+            <Grid item xs={12} sm={6} md={4}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <Card sx={{ height: '100%', textAlign: 'center', p: 3 }}>
+                  <Typography variant="h4" sx={{ mb: 2 }}>📱</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
+                    Videos de Calidad
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Sube videos claros y bien iluminados. La calidad de tu contenido 
+                    influye en las puntuaciones que recibes.
+                  </Typography>
+                </Card>
+              </motion.div>
+            </Grid>
+          </Grid>
+        </Box>
+
         {/* Navegación rápida */}
         <Box sx={{ mt: 4, mb: 4 }}>
           <Typography 
