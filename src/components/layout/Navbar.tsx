@@ -70,9 +70,6 @@ export const Navbar = () => {
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {token ? (
               <>
-                <NavButton onClick={() => navigate('/home')}>
-                  Inicio
-                </NavButton>
                 <NavButton onClick={() => navigate('/ranking')}>
                   <LeaderboardIcon sx={{ mr: 1 }} />
                   Ranking
@@ -81,9 +78,9 @@ export const Navbar = () => {
                   <VideoLibraryIcon sx={{ mr: 1 }} />
                   Mis Publicaciones
                 </NavButton>
-                <NavButton onClick={() => navigate('publicacion/crearpublicacion')}>
+                <NavButton onClick={() => navigate('reto/crearreto')}>
                   <AddIcon sx={{ mr: 1 }} />
-                  Nueva Publicación
+                  Crear Reto
                 </NavButton>
                 <NavButton onClick={() => navigate('/usuario/perfil')}>
                   Perfil

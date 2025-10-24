@@ -29,6 +29,8 @@ const CrearPublicacion = () => {
     video: '',
     usuario_id: '',
     comentarios: [],
+    puntuaciones: [],
+    puntuacion_promedio: 0,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

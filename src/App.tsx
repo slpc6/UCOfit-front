@@ -42,14 +42,17 @@ function App() {
       <BrowserRouter>
       
         <Routes>
-          <Route path="/autenticacion/login" element={<GetPageComponent path="/autenticacion/login" />} />
+          <Route path="/login" element={<GetPageComponent path="/autenticacion/login" />} />
           <Route path="/autenticacion/register" element={<GetPageComponent path="/autenticacion/register" />} />
+          <Route path="/recuperar-contrasena" element={<GetPageComponent path="/autenticacion/passwordrecovery/requestpasswordrecovery" />} />
+          <Route path="/resetear-contrasena" element={<GetPageComponent path="/autenticacion/passwordrecovery/resetpassword" />} />
 
           <Route element={<ProtectedRoute />}>
           {routes.map(({ path, Component }) => (
             <Route key={path} path={path} element={<Component />} />
           ))}
           <Route path="/publicacion/:id" element={<GetPageComponent path="/publicacion/verpublicacion" />} />
+          <Route path="/reto/verreto/:id" element={<GetPageComponent path="/reto/verreto" />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
           </Route>
         </Routes>
@@ -61,7 +64,7 @@ function App() {
 
 function GetPageComponent({ path }: { path: string }) {
   const route = routes.find(r => r.path === path);
-  return route ? <route.Component /> : <Navigate to="/login" replace />;
+  return route ? <route.Component /> : <Navigate to="/autenticacion/login" replace />;
 }
 
 export default App;

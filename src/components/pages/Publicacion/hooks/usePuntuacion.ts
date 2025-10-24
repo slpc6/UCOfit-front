@@ -32,7 +32,7 @@ export const usePuntuacion = (
       
       // Actualizar la publicación con el promedio
       if (publicacion) {
-        setPublicacion({ ...publicacion, puntuacion: response.promedio });
+        setPublicacion({ ...publicacion, puntuacion_promedio: response.promedio });
       }
     } catch (err) {
       console.error('Error al cargar puntuaciones:', err);
@@ -50,7 +50,7 @@ export const usePuntuacion = (
       setRatingValue(response.promedio);
       
       if (publicacion) {
-        setPublicacion({ ...publicacion, puntuacion: response.promedio });
+        setPublicacion({ ...publicacion, puntuacion_promedio: response.promedio });
       }
     } catch (err: any) {
       console.error('Error al puntuar:', err);

@@ -117,6 +117,16 @@ const LoginForm = ({ setError }: LoginFormProps) => {
           Regístrate aquí
         </motion.span>
       </Typography>
+
+      <Typography variant="body2" align="center" sx={{ mt: 2 }}>
+        <motion.span
+          whileHover={{ color: '#1B5E20' }}
+          style={{ cursor: 'pointer', color: '#4CAF50' }}
+          onClick={() => navigate('/recuperar-contrasena')}
+        >
+          ¿Olvidaste tu contraseña?
+        </motion.span>
+      </Typography>
     </form>
   );
 };

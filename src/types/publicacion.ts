@@ -1,10 +1,10 @@
-import { Comentario } from "./comentario";
-
 export interface PuntuacionUsuario {
     usuario_id: string;
     puntuacion: number;
     fecha: string;
 }
+
+import { Comentario } from './comentario';
 
 export interface Publicacion {
     _id?: string;
@@ -13,8 +13,8 @@ export interface Publicacion {
     video: File | null | string;
     video_url?: string;
     usuario_id?: string;
-    comentarios?: Comentario[] | Record<string, any>;
-    puntuacion?: number;
-    puntuaciones?: PuntuacionUsuario[];
-    puntuacion_promedio?: number;
+    reto_id?: string;
+    comentarios: Comentario[];
+    puntuaciones: PuntuacionUsuario[];
+    puntuacion_promedio: number;
 }

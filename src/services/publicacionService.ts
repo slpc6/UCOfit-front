@@ -14,6 +14,24 @@ export const publicacionService = {
     if (datos.video) {
       formData.append('video', datos.video);
     }
+    if (datos.reto_id) {
+      formData.append('reto_id', datos.reto_id);
+    }
+    
+    const response = await api.post('/publicacion/crear', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
+  },
+
+  crear: async (datos: { titulo: string; descripcion: string; video: File; reto_id: string }) => {
+    const formData = new FormData();
+    formData.append('titulo', datos.titulo);
+    formData.append('descripcion', datos.descripcion);
+    formData.append('video', datos.video);
+    formData.append('reto_id', datos.reto_id);
     
     const response = await api.post('/publicacion/crear', formData, {
       headers: {
@@ -32,16 +50,22 @@ export const publicacionService = {
     const response = await api.get('/publicacion/usuario');
     return response.data.publicaciones;
   },
+
+  listarPublicacionesReto: async (retoId: string) => {
+    const response = await api.get(`/publicacion/reto/${retoId}`);
+    return response;
+  },
+
   encontrarVideo: async (video_id: string) => {
     const response = await api.get(`/publicacion/video/${video_id}`);
     return response.data;
   },
+
   encontrarPublicacion: async (publicacion_id: string)=>{
     const response = await api.get(`/publicacion/${publicacion_id}`);
     response.data.video_url = api.defaults.baseURL + '/publicacion/video/' + response.data.video;
     return response.data;
   },
-
 
   editarPublicacion: async (publicacionId: string, datos: { titulo?: string; descripcion?: string }): Promise<PublicacionResponse> => {
     const params = new URLSearchParams();

@@ -5,7 +5,7 @@ import axios from 'axios';
 
 
 const api = axios.create({
-  baseURL: 'https://ucofit-back.onrender.com'});
+  baseURL: 'http://localhost:8000'});
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
