@@ -66,14 +66,34 @@ const ResetPassword = () => {
     setError('');
 
     // Validaciones del lado cliente
-    if (formData.newPassword !== formData.confirmPassword) {
-      setError('Las contraseñas no coinciden');
+    if (!formData.newPassword.trim()) {
+      setError('Por favor ingresa una nueva contraseña');
       setLoading(false);
       return;
     }
 
     if (formData.newPassword.length < 8) {
       setError('La contraseña debe tener al menos 8 caracteres');
+      setLoading(false);
+      return;
+    }
+
+    if (formData.newPassword.length > 128) {
+      setError('La contraseña no puede superar los 128 caracteres');
+      setLoading(false);
+      return;
+    }
+
+    if (formData.newPassword !== formData.confirmPassword) {
+      setError('Las contraseñas no coinciden');
+      setLoading(false);
+      return;
+    }
+
+    // Validar fortaleza de la contraseña
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(formData.newPassword)) {
+      setError('La contraseña debe contener al menos una letra minúscula, una mayúscula y un número');
       setLoading(false);
       return;
     }
@@ -86,11 +106,15 @@ const ResetPassword = () => {
       
       if (response.data) {
         setSuccess(true);
+        // Redirigir al login después de 3 segundos
+        setTimeout(() => {
+          navigate('/autenticacion/login');
+        }, 3000);
       } else {
         setError(response.message || 'Error al actualizar la contraseña');
       }
     } catch (err) {
-      setError('Error al actualizar la contraseña');
+      setError('Error al actualizar la contraseña. Por favor intenta nuevamente.');
     } finally {
       setLoading(false);
     }

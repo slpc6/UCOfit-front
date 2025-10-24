@@ -162,7 +162,7 @@ const VerReto = () => {
               </Typography>
               <Button
                 variant="contained"
-                onClick={() => navigate('/reto/listar')}
+                onClick={() => navigate('/home')}
                 sx={{
                   borderRadius: '8px',
                   background: 'linear-gradient(45deg, #1B5E20 30%, #4CAF50 90%)',

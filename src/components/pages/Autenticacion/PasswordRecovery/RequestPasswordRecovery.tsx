@@ -28,16 +28,28 @@ const RequestPasswordRecovery = () => {
     setError('');
     setSuccess(false);
 
+    // Validación básica del email
+    if (!email.trim()) {
+      setError('Por favor ingresa tu correo electrónico');
+      setLoading(false);
+      return;
+    }
+
+    // Validación de formato de email UCO
+    const emailPattern = /^[a-z]+\.[a-z]+\d{4}@uco\.net\.co$/;
+    if (!emailPattern.test(email.trim())) {
+      setError('Por favor ingresa un correo válido de la Universidad Católica de Oriente (formato: nombre.apellido1234@uco.net.co)');
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await passwordRecoveryService.requestRecovery({ email });
+      const response = await passwordRecoveryService.requestRecovery({ email: email.trim() });
       
-      if (response.data) {
-        setSuccess(true);
-      } else {
-        setError(response.message || 'Error al enviar la solicitud');
-      }
+      // Siempre mostrar éxito por seguridad (incluso si el email no existe)
+      setSuccess(response.data?.msg === 'Si el correo existe en nuestro sistema, recibirás un email con las instrucciones');
     } catch (err) {
-      setError('Error al enviar la solicitud de recuperación');
+      setError('Error al enviar la solicitud de recuperación. Por favor intenta nuevamente.');
     } finally {
       setLoading(false);
     }
