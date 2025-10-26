@@ -225,7 +225,7 @@ const VerPublicacion = () => {
                 disabled={puntuacionLoading}
               />
               <Typography variant="body2" sx={{ ml: 1 }}>
-                {promedio.toFixed(1)} ({totalPuntuaciones} votos)
+                {promedio ? promedio.toFixed(1) : '0.0'} ({totalPuntuaciones} votos)
               </Typography>
             </Box>
           </CardActions>

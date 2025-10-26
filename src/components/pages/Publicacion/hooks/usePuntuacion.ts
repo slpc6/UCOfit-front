@@ -29,13 +29,16 @@ export const usePuntuacion = (
     
     try {
       const response = await puntuacionService.obtenerPromedio(id);
-      setPromedio(response.promedio);
-      setTotalPuntuaciones(response.total_puntuaciones);
-      setRatingValue(response.promedio);
+      const promedioValue = response.promedio || 0;
+      const totalValue = response.total_puntuaciones || 0;
+      
+      setPromedio(promedioValue);
+      setTotalPuntuaciones(totalValue);
+      setRatingValue(promedioValue);
       
       // Actualizar la publicación con el promedio usando refs
       if (publicacionRef.current) {
-        setPublicacionRef.current({ ...publicacionRef.current, puntuacion_promedio: response.promedio });
+        setPublicacionRef.current({ ...publicacionRef.current, puntuacion_promedio: promedioValue });
       }
     } catch (err) {
       setErrorRef.current(`Error al cargar puntuaciones. ${err}`);
@@ -54,12 +57,15 @@ export const usePuntuacion = (
     setLoading(true);
     try {
       const response = await puntuacionService.puntuarPublicacion(id, newValue);
-      setPromedio(response.promedio);
-      setTotalPuntuaciones(response.total_puntuaciones);
-      setRatingValue(response.promedio);
+      const promedioValue = response.promedio || 0;
+      const totalValue = response.total_puntuaciones || 0;
+      
+      setPromedio(promedioValue);
+      setTotalPuntuaciones(totalValue);
+      setRatingValue(promedioValue);
       
       if (publicacion) {
-        setPublicacion({ ...publicacion, puntuacion_promedio: response.promedio });
+        setPublicacion({ ...publicacion, puntuacion_promedio: promedioValue });
       }
     } catch (err: unknown) {
       const errorMsg = (err as { response?: { data?: { msg?: string } } })?.response?.data?.msg || 'Error al enviar puntuación';
