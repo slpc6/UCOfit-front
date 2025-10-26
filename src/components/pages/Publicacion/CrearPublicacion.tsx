@@ -48,11 +48,14 @@ const CrearPublicacion = () => {
     setError('');
     
     try {
-      await publicacionService.crearPublicacion(form);
+      const publicacionData = {
+        titulo: form.titulo,
+        descripcion: form.descripcion,
+      };
+      await publicacionService.crear(publicacionData, fileInputRef.current?.files?.[0] || null);
       navigate('/mis-publicaciones');
     } catch (err) {
-      console.error(err);
-      setError('Error al crear la publicación');
+      setError(`Error al crear la publicación. ${err}`);
     } finally {
       setLoading(false);
     }

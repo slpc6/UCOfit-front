@@ -15,9 +15,9 @@ export const useEditarPublicacion = (
     try {
       const response = await publicacionService.editarPublicacion(publicacionId, datos);
       return response;
-    } catch (err: any) {
-      console.error('Error al editar publicación:', err);
-      const errorMsg = err.response?.data?.msg || 'Error al editar la publicación';
+    } catch (err: unknown) {
+      // Error handled by service
+      const errorMsg = (err as { response?: { data?: { msg?: string } } })?.response?.data?.msg || 'Error al editar la publicación';
       setError(errorMsg);
       throw err;
     } finally {
@@ -30,9 +30,9 @@ export const useEditarPublicacion = (
     try {
       const response = await publicacionService.eliminarPublicacion(publicacionId);
       return response;
-    } catch (err: any) {
-      console.error('Error al eliminar publicación:', err);
-      const errorMsg = err.response?.data?.msg || 'Error al eliminar la publicación';
+    } catch (err: unknown) {
+      // Error handled by service
+      const errorMsg = (err as { response?: { data?: { msg?: string } } })?.response?.data?.msg || 'Error al eliminar la publicación';
       setError(errorMsg);
       throw err;
     } finally {

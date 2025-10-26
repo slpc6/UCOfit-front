@@ -1,3 +1,5 @@
+/** Tipos para la gestión de retos */
+
 export interface Reto {
   id: string;
   titulo: string;
@@ -18,12 +20,18 @@ export interface RetoActualizar {
   descripcion?: string;
 }
 
-export interface RetoConPublicacion {
+export interface RetoConPublicacionRequest {
   titulo_reto: string;
   descripcion_reto: string;
   titulo_publicacion: string;
   descripcion_publicacion: string;
-  video: File;
+}
+
+export interface RetoConPublicacionResponse {
+  msg: string;
+  reto_id: string;
+  publicacion_id: string;
+  video_id: string;
 }
 
 export interface UsuarioRanking {

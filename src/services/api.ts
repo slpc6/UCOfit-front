@@ -1,11 +1,11 @@
-// Servicio para la gestion de la API
+/** Servicio centralizado para la gestión de la API */
 
-//External imports
-import axios from 'axios';
-
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://ucofit-back.onrender.com'});
+  baseURL: 'http://localhost:8000',
+});
+
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
@@ -15,14 +15,11 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+
 api.interceptors.response.use(
-  response => response,
-  error => {
-    console.error('API Error:', {
-      message: error.message,
-      response: error.response?.data,
-      status: error.response?.status
-    });
+  (response: AxiosResponse) => response,
+  (error: AxiosError) => {
+    // Error handled by interceptor
     return Promise.reject(error);
   }
 );

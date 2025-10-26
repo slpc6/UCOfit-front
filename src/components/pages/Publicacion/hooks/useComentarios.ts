@@ -18,15 +18,24 @@ export const useComentarios = (
     setEnviandoComentario(true);
 
     try {
-      await comentarioService.comentarPublicacion(id, nuevoComentario);
-      const actualizada = await publicacionService.encontrarPublicacion(id);
-      if (actualizada) {
-        setPublicacion(actualizada);
+      const comentarioData = {
+        comentario: nuevoComentario,
+        publicacion_id: id,
+      };
+      
+      const resultado = await comentarioService.crear(id, comentarioData);
+      
+      if (resultado.data) {
+        const actualizada = await publicacionService.obtener(id);
+        if (actualizada.data) {
+          setPublicacion(actualizada.data);
+        }
+        setNuevoComentario('');
+      } else {
+        setError(resultado.message || 'Error al enviar comentario');
       }
-      setNuevoComentario('');
     } catch (err) {
-      console.error(err);
-      setError('Error al enviar comentario');
+      setError(`Error al enviar comentario. ${err}`);
     } finally {
       setEnviandoComentario(false);
     }

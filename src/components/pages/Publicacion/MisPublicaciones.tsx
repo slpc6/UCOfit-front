@@ -49,11 +49,14 @@ const MisPublicaciones = () => {
   useEffect(() => {
     const fetchPublicaciones = async () => {
       try {
-        const data = await publicacionService.listarPublicacionesUsuario();
-        setPublicaciones(data);
+        const response = await publicacionService.listarUsuario();
+        if (response.data) {
+          setPublicaciones(response.data.publicaciones || []);
+        } else {
+          setError(response.message || 'Error al cargar tus publicaciones');
+        }
       } catch (err) {
-        setError('Error al cargar tus publicaciones');
-        console.error(err);
+        setError(`Error al cargar tus publicaciones. ${err}`);
       } finally {
         setLoading(false);
       }
@@ -65,12 +68,11 @@ const MisPublicaciones = () => {
   const handleDelete = async (id: string) => {
     setSubmitting(true);
     try {
-      await publicacionService.eliminarPublicacion(id);
+      await publicacionService.eliminar(id);
       setPublicaciones(publicaciones.filter(p => p._id !== id));
       setDeleteDialogOpen(null);
     } catch (err) {
-      console.error(err);
-      setError('Error al eliminar la publicación');
+      setError(`Error al eliminar la publicación. ${err}`);
     } finally {
       setSubmitting(false);
     }
@@ -81,15 +83,14 @@ const MisPublicaciones = () => {
     
     setSubmitting(true);
     try {
-      await publicacionService.editarPublicacion(editDialogOpen, editForm);
-      // Actualizar la publicación en el estado local
+      await publicacionService.editar(editDialogOpen, editForm);
+
       setPublicaciones(publicaciones.map(p => 
         p._id === editDialogOpen ? { ...p, ...editForm } : p
       ));
       setEditDialogOpen(null);
     } catch (err) {
-      console.error(err);
-      setError('Error al editar la publicación');
+      setError(`Error al editar la publicación. ${err}`);
     } finally {
       setSubmitting(false);
     }

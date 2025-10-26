@@ -41,7 +41,7 @@ const ListarRetos = () => {
           setError(response.message || 'Error al cargar los retos');
         }
       } catch (err) {
-        setError('Error al cargar los retos');
+        setError(`Error al cargar los retos. ${err}`);
       } finally {
         setLoading(false);
       }

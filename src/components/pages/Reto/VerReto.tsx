@@ -33,7 +33,6 @@ const VerReto = () => {
   const [canCreatePublication, setCanCreatePublication] = useState(false);
   const [userHasPublication, setUserHasPublication] = useState(false);
 
-  // Estados para el formulario de creación
   const [publicationData, setPublicationData] = useState({
     titulo: '',
     descripcion: '',
@@ -47,8 +46,7 @@ const VerReto = () => {
 
       try {
         setLoading(true);
-        
-        // Obtener datos del reto
+
         const retoResponse = await retoService.obtener(id);
         if (retoResponse.data) {
           setReto(retoResponse.data.reto);
@@ -57,12 +55,10 @@ const VerReto = () => {
           return;
         }
 
-        // Obtener publicaciones del reto
-        const publicacionesResponse = await publicacionService.listarPublicacionesReto(id);
+        const publicacionesResponse = await publicacionService.listarPorReto(id);
         if (publicacionesResponse.data) {
           setPublicaciones(publicacionesResponse.data.publicaciones || []);
-          
-          // Verificar si el usuario ya tiene una publicación en este reto
+
           const userEmail = localStorage.getItem('userEmail');
           const userPublication = publicacionesResponse.data.publicaciones?.find(
             (pub: Publicacion) => pub.usuario_id === userEmail
@@ -73,7 +69,7 @@ const VerReto = () => {
         }
 
       } catch (err) {
-        setError('Error al cargar los datos del reto');
+        setError(`Error al cargar los datos del reto. ${err}`);
       } finally {
         setLoading(false);
       }
@@ -104,13 +100,12 @@ const VerReto = () => {
       const response = await publicacionService.crear({
         titulo: publicationData.titulo,
         descripcion: publicationData.descripcion,
-        video: publicationData.video,
         reto_id: id
-      });
+      }, publicationData.video);
 
       if (response.data) {
-        // Recargar las publicaciones
-        const publicacionesResponse = await publicacionService.listarPublicacionesReto(id);
+
+        const publicacionesResponse = await publicacionService.listarPorReto(id);
         if (publicacionesResponse.data) {
           setPublicaciones(publicacionesResponse.data.publicaciones || []);
         }
@@ -123,7 +118,7 @@ const VerReto = () => {
         setError(response.message || 'Error al crear la publicación');
       }
     } catch (err) {
-      setError('Error al crear la publicación');
+      setError(`Error al crear la publicación. ${err}`);
     } finally {
       setCreating(false);
     }

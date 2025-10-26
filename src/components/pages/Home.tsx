@@ -39,18 +39,20 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Cargar publicaciones
-        const publicacionesData = await publicacionService.listarPublicaciones();
-        setPublicaciones(publicacionesData);
 
-        // Cargar retos activos (solo los primeros 6 para la página de inicio)
+        const publicacionesData = await publicacionService.listar();
+        if (publicacionesData.data) {
+          setPublicaciones(publicacionesData.data.publicaciones || []);
+        } else {
+          setError(publicacionesData.message || 'Error al cargar las publicaciones');
+        }
+
         const retosResponse = await retoService.listar(true, 6, 0);
         if (retosResponse.data) {
           setRetos(retosResponse.data.retos || []);
         }
       } catch (err) {
-        setError('Error al cargar datos');
-        console.error(err);
+        setError(`Error al cargar datos. ${err}`);
       } finally {
         setLoading(false);
       }

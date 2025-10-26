@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { Box, Container } from '@mui/material';
 
-export const LayoutContainer = styled(Box)(({}) => ({
+export const LayoutContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   minHeight: '100vh',
@@ -16,6 +16,6 @@ export const MainContainer = styled(Container)(({ theme }) => ({
   justifyContent: 'center',
   padding: theme.spacing(4),
   [theme.breakpoints.up('lg')]: {
-    maxWidth: '100%', // Más ancho para pantallas grandes
+    maxWidth: '100%',
   },
 }));

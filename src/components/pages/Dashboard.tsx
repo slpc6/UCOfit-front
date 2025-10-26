@@ -19,7 +19,18 @@ import { LoginContainer, LoginPaper } from '../pages/Autenticacion/Login/style';
 import { rankingService } from '../../services/rankingService';
 
 const Dashboard = () => {
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<{
+    nombre: string;
+    apellido: string;
+    email: string;
+    ciudad?: string;
+    foto_perfil?: string;
+    puntuacion_total: number;
+    posicion: number;
+    total_publicaciones: number;
+    promedio_puntuacion: number;
+    publicaciones_con_puntuacion: number;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -34,7 +45,7 @@ const Dashboard = () => {
           setError(response.message || 'Error al cargar las estadísticas');
         }
       } catch (err) {
-        setError('Error al cargar las estadísticas');
+        setError(`Error al cargar las estadísticas. ${err}`);
       } finally {
         setLoading(false);
       }
@@ -188,7 +199,7 @@ const Dashboard = () => {
                           {stats.total_publicaciones}
                         </Typography>
                         <Typography variant="h6" color="text.secondary">
-                          Publicaciones
+                          Total Publicaciones
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                           Videos compartidos

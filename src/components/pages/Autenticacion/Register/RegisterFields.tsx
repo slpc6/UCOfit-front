@@ -17,8 +17,26 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 
 interface RegisterFieldsProps {
-  formData: any;
-  setFormData: (data: any) => void;
+  formData: {
+    nombre: string;
+    apellido: string;
+    email: string;
+    password: string;
+    descripcion: string;
+    ciudad?: string;
+    telefono?: string;
+    foto_perfil?: string;
+  };
+  setFormData: (data: {
+    nombre: string;
+    apellido: string;
+    email: string;
+    password: string;
+    descripcion: string;
+    ciudad?: string;
+    telefono?: string;
+    foto_perfil?: string;
+  }) => void;
 }
 
 const RegisterFields = ({ formData, setFormData }: RegisterFieldsProps) => {

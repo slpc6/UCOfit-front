@@ -51,7 +51,7 @@ const ResetPassword = () => {
           setError(response.msg || 'Token inválido o expirado');
         }
       } catch (err) {
-        setError('Error al validar el token');
+        setError(`Error al validar el token. ${err}`);
       } finally {
         setValidatingToken(false);
       }
@@ -65,7 +65,6 @@ const ResetPassword = () => {
     setLoading(true);
     setError('');
 
-    // Validaciones del lado cliente
     if (!formData.newPassword.trim()) {
       setError('Por favor ingresa una nueva contraseña');
       setLoading(false);
@@ -90,7 +89,6 @@ const ResetPassword = () => {
       return;
     }
 
-    // Validar fortaleza de la contraseña
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (!passwordRegex.test(formData.newPassword)) {
       setError('La contraseña debe contener al menos una letra minúscula, una mayúscula y un número');
@@ -106,7 +104,6 @@ const ResetPassword = () => {
       
       if (response.data) {
         setSuccess(true);
-        // Redirigir al login después de 3 segundos
         setTimeout(() => {
           navigate('/autenticacion/login');
         }, 3000);
@@ -114,7 +111,7 @@ const ResetPassword = () => {
         setError(response.message || 'Error al actualizar la contraseña');
       }
     } catch (err) {
-      setError('Error al actualizar la contraseña. Por favor intenta nuevamente.');
+      setError(`Error al actualizar la contraseña. ${err}`);
     } finally {
       setLoading(false);
     }

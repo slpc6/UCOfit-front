@@ -15,7 +15,7 @@ import {
 import { motion } from 'framer-motion';
 import { LoginContainer, LoginPaper } from '../Autenticacion/Login/style';
 import { retoService } from '../../../services/retoService';
-import { RetoConPublicacion } from '../../../types/reto';
+import { RetoConPublicacionRequest } from '../../../types/reto';
 
 const CrearReto = () => {
   const navigate = useNavigate();
@@ -60,15 +60,14 @@ const CrearReto = () => {
     setError('');
 
     try {
-      const retoConPublicacion: RetoConPublicacion = {
+      const retoConPublicacion: RetoConPublicacionRequest = {
         titulo_reto: retoData.titulo_reto,
         descripcion_reto: retoData.descripcion_reto,
         titulo_publicacion: retoData.titulo_publicacion,
         descripcion_publicacion: retoData.descripcion_publicacion,
-        video: retoData.video
       };
 
-      const response = await retoService.crearConPublicacion(retoConPublicacion);
+      const response = await retoService.crearConPublicacion(retoConPublicacion, retoData.video);
       
       if (response.data) {
         setSuccess(true);
@@ -79,7 +78,7 @@ const CrearReto = () => {
         setError(response.message || 'Error al crear el reto');
       }
     } catch (err) {
-      setError('Error al crear el reto');
+      setError(`Error al crear el reto. ${err}`);
     } finally {
       setLoading(false);
     }

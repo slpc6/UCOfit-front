@@ -58,7 +58,7 @@ const EditarPublicacion = ({
       onSuccess();
       onClose();
     } catch (err) {
-      // El error ya se maneja en el hook
+      setError(`Error al editar la publicación. ${err}`);
     }
   };
 

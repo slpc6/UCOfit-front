@@ -1,83 +1,138 @@
-// Servicio para la gestion de publicaciones
+/** Servicio para la gestión de publicaciones */
 
-
-//Internal imports
 import api from './api';
-import {Publicacion} from '../types/publicacion';
-import {PublicacionResponse} from '../types/response';
+import { handleApiError, handleApiSuccess } from './baseService';
+import { 
+  Publicacion,
+  PublicacionCrearRequest, 
+  PublicacionCrearResponse,
+  PublicacionEditarRequest 
+} from '../types/publicacion';
+import { RespuestaAPI } from '../types/response';
 
 export const publicacionService = {
-  crearPublicacion: async (datos: Publicacion) => {
-    const formData = new FormData();
-    formData.append('titulo', datos.titulo);
-    formData.append('descripcion', datos.descripcion);
-    if (datos.video) {
-      formData.append('video', datos.video);
-    }
-    if (datos.reto_id) {
-      formData.append('reto_id', datos.reto_id);
-    }
-    
-    const response = await api.post('/publicacion/crear', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+
+  crear: async (
+    data: PublicacionCrearRequest, 
+    video?: File | null
+  ): Promise<RespuestaAPI<PublicacionCrearResponse>> => {
+    try {
+      const formData = new FormData();
+      formData.append('titulo', data.titulo);
+      formData.append('descripcion', data.descripcion);
+      if (data.reto_id) {
+        formData.append('reto_id', data.reto_id);
       }
-    });
-    return response.data;
-  },
-
-  crear: async (datos: { titulo: string; descripcion: string; video: File; reto_id: string }) => {
-    const formData = new FormData();
-    formData.append('titulo', datos.titulo);
-    formData.append('descripcion', datos.descripcion);
-    formData.append('video', datos.video);
-    formData.append('reto_id', datos.reto_id);
-    
-    const response = await api.post('/publicacion/crear', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+      if (video) {
+        formData.append('video', video);
       }
-    });
-    return response.data;
+      
+      const response = await api.post('/publicacion/crear', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      
+      return handleApiSuccess(response, 'Publicación creada exitosamente') as RespuestaAPI<PublicacionCrearResponse>;
+    } catch (error) {
+      return handleApiError(error) as RespuestaAPI<PublicacionCrearResponse>;
+    }
   },
 
-  listarPublicaciones: async () => {
-    const response = await api.get('/publicacion/general');
-    return response.data.publicaciones;
+
+  listar: async (): Promise<RespuestaAPI<{publicaciones: Publicacion[]}>> => {
+    try {
+      const response = await api.get('/publicacion/general');
+      return handleApiSuccess(response, 'Publicaciones obtenidas exitosamente') as RespuestaAPI<{publicaciones: Publicacion[]}>;
+    } catch (error) {
+      return handleApiError(error) as RespuestaAPI<{publicaciones: Publicacion[]}>;
+    }
   },
 
-  listarPublicacionesUsuario: async () => {
-    const response = await api.get('/publicacion/usuario');
-    return response.data.publicaciones;
+
+  listarUsuario: async (): Promise<RespuestaAPI<{publicaciones: Publicacion[]}>> => {
+    try {
+      const response = await api.get('/publicacion/usuario');
+      return handleApiSuccess(response, 'Publicaciones del usuario obtenidas exitosamente') as RespuestaAPI<{publicaciones: Publicacion[]}>;
+    } catch (error) {
+      return handleApiError(error) as RespuestaAPI<{publicaciones: Publicacion[]}>;
+    }
   },
 
-  listarPublicacionesReto: async (retoId: string) => {
-    const response = await api.get(`/publicacion/reto/${retoId}`);
-    return response;
+
+  listarPorReto: async (retoId: string): Promise<RespuestaAPI<{publicaciones: Publicacion[]}>> => {
+    try {
+      const response = await api.get(`/publicacion/reto/${retoId}`);
+      return handleApiSuccess(response, 'Publicaciones del reto obtenidas exitosamente') as RespuestaAPI<{publicaciones: Publicacion[]}>;
+    } catch (error) {
+      return handleApiError(error) as RespuestaAPI<{publicaciones: Publicacion[]}>;
+    }
   },
 
-  encontrarVideo: async (video_id: string) => {
-    const response = await api.get(`/publicacion/video/${video_id}`);
-    return response.data;
+
+  obtener: async (publicacionId: string): Promise<RespuestaAPI<Publicacion>> => {
+    try {
+      const response = await api.get(`/publicacion/${publicacionId}`);
+      const data = response.data;
+      
+      // Agregar URL del video si existe
+      if (data.video) {
+        data.video_url = `${api.defaults.baseURL}/publicacion/video/${data.video}`;
+      }
+      
+      return handleApiSuccess({ ...response, data }, 'Publicación obtenida exitosamente') as RespuestaAPI<Publicacion>;
+    } catch (error) {
+      return handleApiError(error) as RespuestaAPI<Publicacion>;
+    }
   },
 
-  encontrarPublicacion: async (publicacion_id: string)=>{
-    const response = await api.get(`/publicacion/${publicacion_id}`);
-    response.data.video_url = api.defaults.baseURL + '/publicacion/video/' + response.data.video;
-    return response.data;
+
+  editar: async (
+    publicacionId: string, 
+    data: PublicacionEditarRequest
+  ): Promise<RespuestaAPI<Publicacion>> => {
+    try {
+      const response = await api.put(`/publicacion/editar/${publicacionId}`, data);
+      return handleApiSuccess(response, 'Publicación actualizada exitosamente') as RespuestaAPI<Publicacion>;
+    } catch (error) {
+      return handleApiError(error) as RespuestaAPI<Publicacion>;
+    }
   },
 
-  editarPublicacion: async (publicacionId: string, datos: { titulo?: string; descripcion?: string }): Promise<PublicacionResponse> => {
-    const params = new URLSearchParams();
-    if (datos.titulo) params.append('titulo', datos.titulo);
-    if (datos.descripcion) params.append('descripcion', datos.descripcion);
-    
-    const response = await api.put(`/publicacion/editar/${publicacionId}?${params.toString()}`);
-    return response.data;
+
+  eliminar: async (publicacionId: string): Promise<RespuestaAPI<{msg: string}>> => {
+    try {
+      const response = await api.delete(`/publicacion/eliminar/${publicacionId}`);
+      return handleApiSuccess(response, 'Publicación eliminada exitosamente') as RespuestaAPI<{msg: string}>;
+    } catch (error) {
+      return handleApiError(error) as RespuestaAPI<{msg: string}>;
+    }
   },
 
-  eliminarPublicacion: async (publicacionId: string): Promise<PublicacionResponse> => {
-    const response = await api.delete(`/publicacion/eliminar/${publicacionId}`);
-    return response.data;
-  }
+
+  obtenerVideoUrl: (videoId: string): string => {
+    return `${api.defaults.baseURL}/publicacion/video/${videoId}`;
+  },
+
+  // Métodos adicionales para compatibilidad
+  crearPublicacion: async (data: PublicacionCrearRequest, video?: File | null): Promise<RespuestaAPI<PublicacionCrearResponse>> => {
+    return publicacionService.crear(data, video);
+  },
+
+  editarPublicacion: async (publicacionId: string, data: PublicacionEditarRequest): Promise<RespuestaAPI<Publicacion>> => {
+    return publicacionService.editar(publicacionId, data);
+  },
+
+  eliminarPublicacion: async (publicacionId: string): Promise<RespuestaAPI<{msg: string}>> => {
+    return publicacionService.eliminar(publicacionId);
+  },
+
+  encontrarPublicacion: async (publicacionId: string): Promise<Publicacion | null> => {
+    try {
+      const response = await publicacionService.obtener(publicacionId);
+      return response.data || null;
+    } catch {
+      return null;
+    }
+  },
 };

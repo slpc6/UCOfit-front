@@ -56,10 +56,12 @@ const Profile = () => {
           setError(response.message || 'Error al cargar el perfil');
         }
 
-        const publicaciones = await publicacionService.listarPublicacionesUsuario();
-        setPublicacionesCount(publicaciones.length);
+        const publicacionesResponse = await publicacionService.listarUsuario();
+        if (publicacionesResponse.data) {
+          setPublicacionesCount(publicacionesResponse.data.publicaciones?.length || 0);
+        }
       } catch (err) {
-        setError('Error al cargar el perfil');
+        setError(`Error al cargar el perfil. ${err}`);
       } finally {
         setLoading(false);
       }
@@ -80,7 +82,7 @@ const Profile = () => {
         setOpenDialog(false);
       }
     } catch (err) {
-      setError('Error al eliminar la cuenta');
+      setError(`Error al eliminar la cuenta. ${err}`);
       setOpenDialog(false);
     } finally {
       setDeleteLoading(false);
@@ -147,7 +149,7 @@ const Profile = () => {
         setError(response.message || 'Error al actualizar el perfil');
       }
     } catch (err) {
-      setError('Error al actualizar el perfil');
+      setError(`Error al actualizar el perfil. ${err}`);
     } finally {
       setUpdateLoading(false);
     }

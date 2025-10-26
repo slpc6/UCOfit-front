@@ -13,16 +13,15 @@ export const usePublicacion = (id: string | undefined) => {
       if (!id) return;
       try {
         setLoading(true);
-        const encontrada = await publicacionService.encontrarPublicacion(id);
+        const encontrada = await publicacionService.obtener(id);
         
-        if (encontrada) {
-          setPublicacion(encontrada);
+        if (encontrada.data) {
+          setPublicacion(encontrada.data);
         } else {
           setError('Publicación no encontrada');
         }
       } catch (err) {
-        console.error(err);
-        setError('Error al cargar la publicación');
+        setError(`Error al cargar la publicación. ${err}`);
       } finally {
         setLoading(false);
       }

@@ -1,12 +1,22 @@
 import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@mui/material';
+import { ComponentType } from 'react';
 import theme from './theme/Theme';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
 
+type ModuleWithDefault = {
+  default: ComponentType;
+};
+
+type RouteConfig = {
+  path: string;
+  Component: ComponentType;
+};
+
 const modules = import.meta.glob('./components/pages/**/*.tsx', { eager: true });
 
-function getRouteFromPath(path: string) {
+function getRouteFromPath(path: string): string | null {
   const match = path.match(/\.\/components\/pages\/(.*)\.tsx$/);
   if (!match) return null;
 
@@ -25,15 +35,15 @@ function getRouteFromPath(path: string) {
   return route;
 }
 
-const routes = Object.entries(modules)
-  .map(([path, mod]: any) => {
+const routes: RouteConfig[] = Object.entries(modules)
+  .map(([path, mod]): RouteConfig | null => {
     const route = getRouteFromPath(path);
-    const Component = mod.default;
+    const Component = (mod as ModuleWithDefault).default;
 
     if (!route || !Component) return null;
     return { path: route, Component };
   })
-  .filter((r): r is { path: string; Component: any } => r !== null);
+  .filter((r): r is RouteConfig => r !== null);
 
 function App() {
   return (

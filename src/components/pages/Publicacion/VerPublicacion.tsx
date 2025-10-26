@@ -65,21 +65,24 @@ const VerPublicacion = () => {
   useEffect(() => {
     let isMounted = true;
     const checkOwner = async () => {
+      if (!publicacion) return;
+      
       try {
         const perfil = await userService.perfil();
-        const email = perfil?.data?.usuario?.email || perfil?.data?.email;
-        if (isMounted && publicacion) {
+        const email = perfil?.data?.usuario?.email;
+        if (isMounted) {
           setIsOwner(!!email && email === publicacion.usuario_id);
         }
-      } catch (e) {
+      } catch (err) {
         if (isMounted) setIsOwner(false);
+        setError(`Error al verificar el dueño de la publicación. ${err}`);
       }
     };
     checkOwner();
     return () => {
       isMounted = false;
     };
-  }, [publicacion]);
+  }, );
 
   const handleEliminar = async () => {
     if (!id || !publicacion) return;
@@ -89,7 +92,7 @@ const VerPublicacion = () => {
         await eliminarPublicacion(id);
         navigate('/home');
       } catch (err) {
-        // El error ya se maneja en el hook
+        setError(`Error al eliminar la publicación. ${err}`);
       }
     }
   };

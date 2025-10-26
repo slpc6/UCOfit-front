@@ -1,5 +1,5 @@
 // src/components/pages/VerPublicacion/hooks/usePuntuacion.ts
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { puntuacionService } from '../../../../services/puntuacionService';
 import { Publicacion } from '../../../../types/publicacion';
 
@@ -14,14 +14,17 @@ export const usePuntuacion = (
   const [totalPuntuaciones, setTotalPuntuaciones] = useState<number>(0);
   const [loading, setLoading] = useState(false);
 
-  // Cargar puntuaciones al montar el componente
-  useEffect(() => {
-    if (id) {
-      cargarPuntuaciones();
-    }
-  }, [id]);
+  // Usar refs para evitar dependencias que cambian
+  const publicacionRef = useRef(publicacion);
+  const setPublicacionRef = useRef(setPublicacion);
+  const setErrorRef = useRef(setError);
 
-  const cargarPuntuaciones = async () => {
+  // Actualizar refs cuando cambien
+  publicacionRef.current = publicacion;
+  setPublicacionRef.current = setPublicacion;
+  setErrorRef.current = setError;
+
+  const cargarPuntuaciones = useCallback(async () => {
     if (!id) return;
     
     try {
@@ -30,14 +33,20 @@ export const usePuntuacion = (
       setTotalPuntuaciones(response.total_puntuaciones);
       setRatingValue(response.promedio);
       
-      // Actualizar la publicación con el promedio
-      if (publicacion) {
-        setPublicacion({ ...publicacion, puntuacion_promedio: response.promedio });
+      // Actualizar la publicación con el promedio usando refs
+      if (publicacionRef.current) {
+        setPublicacionRef.current({ ...publicacionRef.current, puntuacion_promedio: response.promedio });
       }
     } catch (err) {
-      console.error('Error al cargar puntuaciones:', err);
+      setErrorRef.current(`Error al cargar puntuaciones. ${err}`);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      cargarPuntuaciones();
+    }
+  }, [id, cargarPuntuaciones]);
 
   const handleRating = async (newValue: number | null) => {
     if (!newValue || !id) return;
@@ -52,9 +61,8 @@ export const usePuntuacion = (
       if (publicacion) {
         setPublicacion({ ...publicacion, puntuacion_promedio: response.promedio });
       }
-    } catch (err: any) {
-      console.error('Error al puntuar:', err);
-      const errorMsg = err.response?.data?.msg || 'Error al enviar puntuación';
+    } catch (err: unknown) {
+      const errorMsg = (err as { response?: { data?: { msg?: string } } })?.response?.data?.msg || 'Error al enviar puntuación';
       setError(errorMsg);
     } finally {
       setLoading(false);

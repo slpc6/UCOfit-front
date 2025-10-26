@@ -29,8 +29,9 @@ const Register = () => {
     try {
       await userService.registrar(formData);
       navigate('/login');
-    } catch (err: any) {
-      setError(err.response?.data?.msg || 'Error al registrar usuario');
+    } catch (err: unknown) {
+      const errorMsg = (err as { response?: { data?: { msg?: string } } })?.response?.data?.msg || 'Error al registrar usuario';
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }

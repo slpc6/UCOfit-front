@@ -1,8 +1,11 @@
 import api from './api';
+import { handleApiError, handleApiSuccess } from './baseService';
 import { RespuestaAPI } from '../types/response';
+import { Usuario } from '../types/usuario';
+import { UsuarioRanking } from '../types/reto';
 
 export const rankingService = {
-  obtenerRankingGeneral: async (limit: number = 50, offset: number = 0): Promise<RespuestaAPI> => {
+  obtenerRankingGeneral: async (limit: number = 50, offset: number = 0): Promise<RespuestaAPI<{ranking: UsuarioRanking[], total: number, total_paginas: number, pagina_actual: number}>> => {
     try {
       const params = new URLSearchParams({
         limit: limit.toString(),
@@ -10,54 +13,22 @@ export const rankingService = {
       });
 
       const response = await api.get(`/ranking/general?${params}`);
-      return {
-        message: 'Ranking obtenido exitosamente',
-        data: response.data
-      };
-    } catch (error: any) {
-      let message = 'Error al obtener el ranking';
-      
-      if (error.response) {
-        message = error.response.data?.msg || `Error ${error.response.status}: ${error.response.statusText}`;
-      } else if (error.request) {
-        message = 'No se pudo conectar con el servidor. Verifica que la API esté ejecutándose.';
-      } else {
-        message = error.message || 'Error desconocido al obtener el ranking';
-      }
-      
-      return {
-        message,
-        data: null
-      };
+      return handleApiSuccess(response, 'Ranking obtenido exitosamente') as RespuestaAPI<{ranking: UsuarioRanking[], total: number, total_paginas: number, pagina_actual: number}>;
+    } catch (error) {
+      return handleApiError(error) as RespuestaAPI<{ranking: UsuarioRanking[], total: number, total_paginas: number, pagina_actual: number}>;
     }
   },
 
   obtenerPuntuacionUsuario: async (usuarioId: string): Promise<RespuestaAPI> => {
     try {
       const response = await api.get(`/ranking/usuario/${usuarioId}`);
-      return {
-        message: 'Puntuación del usuario obtenida exitosamente',
-        data: response.data
-      };
-    } catch (error: any) {
-      let message = 'Error al obtener la puntuación del usuario';
-      
-      if (error.response) {
-        message = error.response.data?.msg || `Error ${error.response.status}: ${error.response.statusText}`;
-      } else if (error.request) {
-        message = 'No se pudo conectar con el servidor. Verifica que la API esté ejecutándose.';
-      } else {
-        message = error.message || 'Error desconocido al obtener la puntuación';
-      }
-      
-      return {
-        message,
-        data: null
-      };
+      return handleApiSuccess(response, 'Puntuación del usuario obtenida exitosamente');
+    } catch (error) {
+      return handleApiError(error);
     }
   },
 
-  obtenerMiPuntuacion: async (): Promise<RespuestaAPI> => {
+  obtenerMiPuntuacion: async (): Promise<RespuestaAPI<{usuario: Usuario & {puntuacion_total: number, posicion: number, total_publicaciones: number, promedio_puntuacion: number, publicaciones_con_puntuacion: number}}>> => {
     try {
       const token = localStorage.getItem('token');
       const response = await api.get('/ranking/mi-puntuacion', {
@@ -65,25 +36,9 @@ export const rankingService = {
           Authorization: `Bearer ${token}`,
         },
       });
-      return {
-        message: 'Tu puntuación obtenida exitosamente',
-        data: response.data
-      };
-    } catch (error: any) {
-      let message = 'Error al obtener tu puntuación';
-      
-      if (error.response) {
-        message = error.response.data?.msg || `Error ${error.response.status}: ${error.response.statusText}`;
-      } else if (error.request) {
-        message = 'No se pudo conectar con el servidor. Verifica que la API esté ejecutándose.';
-      } else {
-        message = error.message || 'Error desconocido al obtener tu puntuación';
-      }
-      
-      return {
-        message,
-        data: null
-      };
+      return handleApiSuccess(response, 'Tu puntuación obtenida exitosamente') as RespuestaAPI<{usuario: Usuario & {puntuacion_total: number, posicion: number, total_publicaciones: number, promedio_puntuacion: number, publicaciones_con_puntuacion: number}}>;
+    } catch (error) {
+      return handleApiError(error) as RespuestaAPI<{usuario: Usuario & {puntuacion_total: number, posicion: number, total_publicaciones: number, promedio_puntuacion: number, publicaciones_con_puntuacion: number}}>;
     }
   },
 
@@ -94,25 +49,9 @@ export const rankingService = {
       });
 
       const response = await api.get(`/ranking/top?${params}`);
-      return {
-        message: 'Top de usuarios obtenido exitosamente',
-        data: response.data
-      };
-    } catch (error: any) {
-      let message = 'Error al obtener el top de usuarios';
-      
-      if (error.response) {
-        message = error.response.data?.msg || `Error ${error.response.status}: ${error.response.statusText}`;
-      } else if (error.request) {
-        message = 'No se pudo conectar con el servidor. Verifica que la API esté ejecutándose.';
-      } else {
-        message = error.message || 'Error desconocido al obtener el top de usuarios';
-      }
-      
-      return {
-        message,
-        data: null
-      };
+      return handleApiSuccess(response, 'Top de usuarios obtenido exitosamente');
+    } catch (error) {
+      return handleApiError(error);
     }
   }
 };

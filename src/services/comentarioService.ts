@@ -1,24 +1,26 @@
-// Servicio para la gestion de comentarios
+/** Servicio para la gestión de comentarios */
 
-//Internal imports
 import api from './api';
-
+import { handleApiError, handleApiSuccess } from './baseService';
+import { ComentarioCrearRequest } from '../types/comentario';
+import { RespuestaAPI } from '../types/response';
 
 export const comentarioService = {
-    comentarPublicacion: async (publicacionId: string, comentarioTexto: string) => {
-
-        const comentarioPayload = {
-            comentario_id: '',
-            usuario_id: '',
-            comentario: comentarioTexto,
-            fecha: new Date().toISOString()
-        };
-
-        const response = await api.post(
-            `/comentario/comentar/${publicacionId}`,
-            comentarioPayload,
-            { headers: { 'Content-Type': 'application/json' } }
-        );
-        return response.data;
+  /**
+   * Agrega un comentario a una publicación
+   */
+  crear: async (
+    publicacionId: string, 
+    data: ComentarioCrearRequest
+  ): Promise<RespuestaAPI> => {
+    try {
+      const response = await api.post(`/comentario/comentar/${publicacionId}`, data, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      
+      return handleApiSuccess(response, 'Comentario agregado exitosamente');
+    } catch (error) {
+      return handleApiError(error);
     }
+  },
 };

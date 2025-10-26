@@ -1,4 +1,5 @@
 import api from './api';
+import { handleApiError } from './baseService';
 import { PasswordRecoveryRequest, PasswordResetRequest, TokenValidationResponse } from '../types/passwordRecovery';
 import { RespuestaAPI } from '../types/response';
 
@@ -10,21 +11,8 @@ export const passwordRecoveryService = {
         message: response.data.msg || 'Solicitud enviada exitosamente',
         data: response.data
       };
-    } catch (error: any) {
-      let message = 'Error al enviar la solicitud de recuperación';
-      
-      if (error.response) {
-        message = error.response.data?.msg || `Error ${error.response.status}: ${error.response.statusText}`;
-      } else if (error.request) {
-        message = 'No se pudo conectar con el servidor. Verifica que la API esté ejecutándose.';
-      } else {
-        message = error.message || 'Error desconocido al enviar la solicitud';
-      }
-      
-      return {
-        message,
-        data: null
-      };
+    } catch (error) {
+      return handleApiError(error);
     }
   },
 
@@ -35,21 +23,8 @@ export const passwordRecoveryService = {
         message: response.data.msg || 'Contraseña actualizada exitosamente',
         data: response.data
       };
-    } catch (error: any) {
-      let message = 'Error al actualizar la contraseña';
-      
-      if (error.response) {
-        message = error.response.data?.detail || error.response.data?.msg || `Error ${error.response.status}: ${error.response.statusText}`;
-      } else if (error.request) {
-        message = 'No se pudo conectar con el servidor. Verifica que la API esté ejecutándose.';
-      } else {
-        message = error.message || 'Error desconocido al actualizar la contraseña';
-      }
-      
-      return {
-        message,
-        data: null
-      };
+    } catch (error) {
+      return handleApiError(error);
     }
   },
 
@@ -60,10 +35,10 @@ export const passwordRecoveryService = {
         valid: response.data.valid,
         msg: response.data.msg
       };
-    } catch (error: any) {
+    } catch (error) {
       return {
         valid: false,
-        msg: 'Error al validar el token'
+        msg: handleApiError(error).message
       };
     }
   }

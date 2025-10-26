@@ -41,7 +41,7 @@ const Ranking = () => {
           setError(response.message || 'Error al cargar el ranking');
         }
       } catch (err) {
-        setError('Error al cargar el ranking');
+        setError(`Error al cargar el ranking. ${err}`);
       } finally {
         setLoading(false);
       }

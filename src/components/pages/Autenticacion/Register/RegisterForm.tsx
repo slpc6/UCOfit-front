@@ -4,8 +4,26 @@ import { motion } from 'framer-motion';
 import RegisterFields from './RegisterFields';
 
 interface RegisterFormProps {
-  formData: any;
-  setFormData: (data: any) => void;
+  formData: {
+    nombre: string;
+    apellido: string;
+    email: string;
+    password: string;
+    descripcion: string;
+    ciudad?: string;
+    telefono?: string;
+    foto_perfil?: string;
+  };
+  setFormData: (data: {
+    nombre: string;
+    apellido: string;
+    email: string;
+    password: string;
+    descripcion: string;
+    ciudad?: string;
+    telefono?: string;
+    foto_perfil?: string;
+  }) => void;
   onSubmit: (e: React.FormEvent) => void;
   loading: boolean;
 }
