@@ -218,7 +218,7 @@ const VerReto = () => {
                 />
                 <Button
                   variant="outlined"
-                  onClick={() => navigate('/reto/listar')}
+                  onClick={() => navigate('/reto/listarretos')}
                   sx={{ borderRadius: '8px' }}
                 >
                   Volver

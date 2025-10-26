@@ -181,7 +181,7 @@ const CrearPublicacion = () => {
                 style={{ width: '100%', padding: '12px', border: '2px dashed #ccc', borderRadius: '8px' }}
               />
               <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                Formatos aceptados: MP4 | Tamaño máximo recomendado: 100MB
+                Formatos aceptados: MP4 | Tamaño máximo: 100MB
               </Typography>
             </Box>
 
@@ -189,7 +189,7 @@ const CrearPublicacion = () => {
             <Box sx={{ mt: 4, display: 'flex', gap: 2 }}>
               <Button
                 variant="outlined"
-                onClick={() => navigate('/mis-publicaciones')}
+                onClick={() => navigate('/home')}
                 disabled={loading}
               >
                 Cancelar
