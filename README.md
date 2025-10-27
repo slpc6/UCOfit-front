@@ -98,9 +98,28 @@ npm run lint
 npm run type-check
 ```
 
+## 🚀 Despliegue en Render.com
+
+### Configuración en Render
+
+1. **Tipo de Servicio**: Web Service (no Static Site)
+2. **Build Command**: `npm run build`
+3. **Start Command**: `npm start`
+4. **Variables de Entorno**:
+   - `VITE_API_URL`: URL del backend (ej: `https://ucofit-back.onrender.com`)
+
+### Pasos para Desplegar
+
+1. Conecta tu repositorio a Render.com
+2. Configura el servicio como "Web Service"
+3. Establece las variables de entorno en el dashboard de Render
+4. Habilita el despliegue automático
+
+
 ## 📝 Notas de Desarrollo
 
 - Todos los servicios usan el patrón de manejo centralizado de errores
 - Los tipos están sincronizados con el backend
 - Se recomienda ejecutar `npm run lint` antes de cada commit
 - Los servicios retornan objetos `RespuestaAPI` consistentes
+- La aplicación usa un servidor Express para manejar el routing de SPA en producción
