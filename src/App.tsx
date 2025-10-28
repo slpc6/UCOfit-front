@@ -55,7 +55,7 @@ function App() {
           <Route path="/login" element={<GetPageComponent path="/autenticacion/login" />} />
           <Route path="/autenticacion/register" element={<GetPageComponent path="/autenticacion/register" />} />
           <Route path="/recuperar-contrasena" element={<GetPageComponent path="/autenticacion/passwordrecovery/requestpasswordrecovery" />} />
-          <Route path="/resetar-contrasena" element={<GetPageComponent path="/autenticacion/passwordrecovery/resetpassword" />} />
+
 
           <Route element={<ProtectedRoute />}>
           {routes.map(({ path, Component }) => (
